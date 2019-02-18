@@ -1,6 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
 import { IsEmail } from "class-validator";
+import { Trip } from "./Trip";
+import { Point } from "../utils";
 
 @Entity()
 @ObjectType()
@@ -33,6 +35,14 @@ export class User extends BaseEntity {
   @Field({ nullable: true })
   homeAddress?: string;
 
+  @Column("point", { nullable: true })
+  @Field({ nullable: true })
+  workLocation?: Point;
+
+  @Column("point", { nullable: true })
+  @Field({ nullable: true })
+  homeLocation?: Point;
+
   @Column({ unique: true })
   @Field()
   @IsEmail()
@@ -40,4 +50,8 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => Trip, (trip: Trip) => trip.passengers)
+  @Field(() => [Trip])
+  trips: Trip[]
 }
