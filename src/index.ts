@@ -6,6 +6,7 @@ import * as Express from 'express';
 import { createConnection } from "typeorm";
 import { UserResolver } from "./resolvers/UserResolver";
 import * as session from "express-session";
+import { TripResolver } from "./resolvers/TripResolver";
 
 @Resolver()
 export class ConnectionResolver {
@@ -19,7 +20,7 @@ const main: any = async () => {
   await createConnection();
 
   const schema = await buildSchema({
-    resolvers: [ConnectionResolver, UserResolver]
+    resolvers: [ConnectionResolver, UserResolver, TripResolver]
   });
 
   const apolloServer = new ApolloServer({
