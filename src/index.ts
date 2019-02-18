@@ -1,21 +1,38 @@
-import "reflect-metadata";
-import {createConnection} from "typeorm";
-import {User} from "./entity/User";
+import 'reflect-metadata';
 
-createConnection().then(async connection => {
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema, Query, Resolver } from "type-graphql";
+import * as Express from 'express';
+import { createConnection } from "typeorm";
 
-  console.log("Inserting a new user into the database...");
-  const user = new User();
-  user.firstName = "Timber";
-  user.lastName = "Saw";
-  user.age = 25;
-  await connection.manager.save(user);
-  console.log("Saved a new user with id: " + user.id);
+@Resolver()
+export class ConnectionResolver {
+  @Query(() => String)
+  async Connection() {
+    return "Connected!";
+  }
+}
 
-  console.log("Loading users from the database...");
-  const users = await connection.manager.find(User);
-  console.log("Loaded users: ", users);
+const main: any = async () => {
+  await createConnection("dev");
 
-  console.log("Here you can setup and run express/koa/any other framework.");
+  const schema = await buildSchema({
+    resolvers: [ConnectionResolver],
+  });
 
-}).catch(error => console.log(error));
+  const apolloServer = new ApolloServer({
+    schema,
+    playground: true,
+    context: ({ req }: any) => ({ req })
+  });
+
+  const app = Express();
+
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(4000, () => {
+    console.log(`Server is running, GraphQL Playground available at http://localhost:4000/graphql`);
+  });
+};
+
+main();
