@@ -9,6 +9,8 @@
     "@types/express-session": "^1.15.12",
     "@types/graphql": "^14.0.7",
     "@types/node": "^11.9.4",
+    "concurrently": "^4.1.0",
+    "rimraf": "^2.6.3",
     "ts-node-dev": "^1.0.0-pre.32",
     "typescript": "3.3.3"
   },
@@ -26,7 +28,15 @@
     "typeorm": "0.2.13"
   },
   "scripts": {
-    "start": "ts-node-dev --respawn src/index.ts",
-    "build": "tsc"
+    "postinstall": "yarn --cwd frontend install",
+    "clean": "rimraf build node_modules frontend/build frontend/node_modules",
+    "dev": "concurrently \"yarn start:server\" \"yarn start:frontend\" ",
+    "start:server": "ts-node-dev --respawn src/index.ts",
+    "start:frontend": "yarn --cwd frontend run start",
+    "build:server": "tsc",
+    "build:frontend": "yarn --cwd frontend run build --production",
+    "prebuild": "rimraf build frontend/build",
+    "build": "concurrently \"yarn build:server\" \"yarn build:frontend\" ",
+    "postbuild": "mv frontend/build build/public"
   }
 }
