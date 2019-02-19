@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema, Query, Resolver } from "type-graphql";
 import * as Express from "express";
-import { createConnection } from "typeorm";
+import { ConnectionOptions, createConnection } from "typeorm";
 import { UserResolver } from "./resolvers/UserResolver";
 import * as session from "express-session";
 import { TripResolver } from "./resolvers/TripResolver";
@@ -21,7 +21,22 @@ export class ConnectionResolver {
 // TODO check if parcel or webpack can bundle the backend into a single file.
 
 const main: any = async () => {
-  await createConnection(process.env.NODE_ENV == "production" ? "prod" : "default");
+  let db: ConnectionOptions | string = "default";
+  if (process.env.NODE_ENV == "production") {
+    db = {
+      url: process.env.DATABASE_URL,
+      type: "postgres",
+      synchronize: true,
+      logging: "all",
+      extra: {
+        ssl: true
+      },
+      entities: ["build/entity/**/*.js"],
+      migrations: ["build/migration/**/*.js"]
+    }
+  }
+
+  await createConnection(db as any);
   // TODO (IMPORTANT) add lazy column and table joining depending
   //  on the query i.e. if a `current` query requests the trips
   //  automatically join the trips column. instead of proactively doing it.
