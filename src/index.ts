@@ -19,6 +19,9 @@ export class ConnectionResolver {
 
 const main: any = async () => {
   await createConnection();
+  // TODO (IMPORTANT) add lazy column and table joining depending
+  //  on the query i.e. if a `current` query requests the trips
+  //  automatically join the trips column. instead of proactively doing it.
 
   const schema = await buildSchema({
     resolvers: [

@@ -1,5 +1,5 @@
-import {Arg, Ctx, Mutation, Query, Resolver} from "type-graphql";
-import {User} from "../entity/User";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { User } from "../entity/User";
 import * as argon2 from "argon2";
 
 @Resolver()
@@ -7,7 +7,7 @@ export class UserResolver {
     @Query(() => User, {nullable: true})
     async current(@Ctx() context: any): Promise<User | undefined> {
         if (context.req.session.userId) {
-            const passenger = await User.findOne(context.req.session.userId);
+          const passenger = await User.findOne(context.req.session.userId, { relations: ["tickets", 'trips'] });
             console.log(passenger);
             return passenger;
         } else {

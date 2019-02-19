@@ -1,11 +1,4 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-  OneToMany
-} from "typeorm";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, ObjectType } from "type-graphql";
 import { IsEmail } from "class-validator";
 import { Trip } from "./Trip";
@@ -59,8 +52,9 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @ManyToMany(() => Trip, (trip: Trip) => trip.passengers)
+  @ManyToMany(() => Trip)
   @Field(() => [Trip])
+  @JoinTable()
   trips: Trip[];
 
   @OneToMany(() => Feedback, (ticket: Feedback) => ticket.user)
