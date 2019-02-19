@@ -50,7 +50,7 @@ const main: any = async () => {
     })
   );
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: { credentials: true } });
 
   app.listen(4000, () => {
     console.log(
