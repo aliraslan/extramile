@@ -30,7 +30,6 @@ export const Register = () => {
         return (
           <div className="prontoView">
             <Input
-              And
               placeholder="Username"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -42,7 +41,6 @@ export const Register = () => {
               }}
             />
             <Input
-              And
               placeholder="Full Name"
               value={fullName}
               onChange={e => setFullName(e.target.value)}
@@ -54,7 +52,6 @@ export const Register = () => {
               }}
             />
             <Input
-              And
               placeholder="Password"
               style={{
                 position: "absolute",
