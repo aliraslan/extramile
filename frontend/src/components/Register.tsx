@@ -7,8 +7,12 @@ import "./styling/Pronto.css";
 // // TODO
 // Registering logs you in.
 const RegisterMutation = gql`
-  mutation RegisterMutation($email: String!, $password: String!) {
-    Register(email: $email, password: $password, fullName: $fullName) {
+  mutation RegisterMutation(
+    $email: String!
+    $firstName: String!
+    $password: String!
+  ) {
+    Register(email: $email, password: $password, firstName: $firstName) {
       id
     }
   }
@@ -17,7 +21,7 @@ const RegisterMutation = gql`
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setfirstName] = useState("");
 
   return (
     <Mutation mutation={RegisterMutation}>
@@ -30,34 +34,34 @@ export const Register = () => {
         return (
           <div className="prontoView">
             <Input
-              placeholder="Username"
+              placeholder="Full Name"
+              value={firstName}
+              onChange={e => setfirstName(e.target.value)}
+              style={{
+                position: "absolute",
+                top: "30%",
+                left: "15%",
+                width: "70vw"
+              }}
+            />
+            <Input
+              placeholder="Email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               style={{
                 position: "absolute",
                 top: "40%",
-                left: "25%",
-                width: "50vw"
-              }}
-            />
-            <Input
-              placeholder="Full Name"
-              value={fullName}
-              onChange={e => setFullName(e.target.value)}
-              style={{
-                position: "absolute",
-                top: "32%",
-                left: "25%",
-                width: "50vw"
+                left: "15%",
+                width: "70vw"
               }}
             />
             <Input
               placeholder="Password"
               style={{
                 position: "absolute",
-                top: "48%",
-                left: "25%",
-                width: "50vw"
+                top: "50%",
+                left: "15%",
+                width: "70vw"
               }}
               type="password"
               value={password}
@@ -65,12 +69,14 @@ export const Register = () => {
             />
             <Button
               type="primary"
-              onClick={() => register({ variables: { email, password } })}
+              onClick={() =>
+                register({ variables: { email, password, firstName } })
+              }
               style={{
                 position: "absolute",
                 top: "65%",
-                left: "25%",
-                width: "50vw"
+                left: "15%",
+                width: "70vw"
               }}
             >
               Register
@@ -78,7 +84,7 @@ export const Register = () => {
             <a
               style={{
                 position: "absolute",
-                top: "72%",
+                top: "75%",
                 left: "45%"
               }}
               href="/app"

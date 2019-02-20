@@ -13,7 +13,7 @@ const LoginMutation = gql`
   }
 `;
 
-export const AppView = () => {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +22,7 @@ export const AppView = () => {
       {(login, { data, loading, error }) => {
         if (data) {
           // you're now logged in!
-          return <Redirect to="/map" />;
+          return <Redirect to="/map" />; // Pending change
         }
 
         return (
@@ -35,8 +35,8 @@ export const AppView = () => {
               style={{
                 position: "absolute",
                 top: "40%",
-                left: "25%",
-                width: "50vw"
+                left: "15%",
+                width: "70vw"
               }}
             />
             <Input
@@ -44,32 +44,22 @@ export const AppView = () => {
               placeholder="Password"
               style={{
                 position: "absolute",
-                top: "48%",
-                left: "25%",
-                width: "50vw"
+                top: "50%",
+                left: "15%",
+                width: "70vw"
               }}
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
-            <a
-              style={{
-                position: "absolute",
-                top: "55%",
-                left: "43%"
-              }}
-              href="/forgotpassword"
-            >
-              Forgot password?
-            </a>
             <Button
               type="primary"
               onClick={() => login({ variables: { email, password } })}
               style={{
                 position: "absolute",
-                top: "65%",
-                left: "25%",
-                width: "50vw"
+                top: "60%",
+                left: "15%",
+                width: "70vw"
               }}
             >
               Login
@@ -77,7 +67,7 @@ export const AppView = () => {
             <a
               style={{
                 position: "absolute",
-                top: "72%",
+                top: "70%",
                 left: "45%"
               }}
               href="/register"

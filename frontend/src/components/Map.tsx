@@ -10,7 +10,7 @@ import {
 } from "react-google-maps";
 const onSuggestSelect = (suggest: any) => {
   if (suggest) {
-    alert(
+    console.log(
       "You are going to " +
         suggest.label +
         " \nThe coordinates are: " +
