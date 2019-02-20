@@ -4,31 +4,33 @@ import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
 import { Button, Input, Icon } from "antd";
 import "./styling/Pronto.css";
-const LoginMutation = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    Login(email: $email, password: $password) {
+// // TODO
+// Registering logs you in.
+const RegisterMutation = gql`
+  mutation RegisterMutation($email: String!, $password: String!) {
+    Register(email: $email, password: $password, fullName: $fullName) {
       id
-      firstName
     }
   }
 `;
 
-export const AppView = () => {
+export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
 
   return (
-    <Mutation mutation={LoginMutation}>
-      {(login, { data, loading, error }) => {
+    <Mutation mutation={RegisterMutation}>
+      {(register, { data, loading, error }) => {
         if (data) {
-          // you're now logged in!
-          return <Redirect to="/map" />;
+          // you're now registered, log in
+          return <Redirect to="/app" />;
         }
 
         return (
           <div className="prontoView">
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              And
               placeholder="Username"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -40,7 +42,19 @@ export const AppView = () => {
               }}
             />
             <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              And
+              placeholder="Full Name"
+              value={fullName}
+              onChange={e => setFullName(e.target.value)}
+              style={{
+                position: "absolute",
+                top: "32%",
+                left: "25%",
+                width: "50vw"
+              }}
+            />
+            <Input
+              And
               placeholder="Password"
               style={{
                 position: "absolute",
@@ -52,19 +66,9 @@ export const AppView = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
-            <a
-              style={{
-                position: "absolute",
-                top: "55%",
-                left: "43%"
-              }}
-              href="/forgotpassword"
-            >
-              Forgot password?
-            </a>
             <Button
               type="primary"
-              onClick={() => login({ variables: { email, password } })}
+              onClick={() => register({ variables: { email, password } })}
               style={{
                 position: "absolute",
                 top: "65%",
@@ -72,7 +76,7 @@ export const AppView = () => {
                 width: "50vw"
               }}
             >
-              Login
+              Register
             </Button>
             <a
               style={{
@@ -80,9 +84,9 @@ export const AppView = () => {
                 top: "72%",
                 left: "45%"
               }}
-              href="/register"
+              href="/app"
             >
-              or sign up!
+              or log in!
             </a>
           </div>
         );
