@@ -1,63 +1,26 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Field, ID, ObjectType } from "type-graphql";
-import { IsEmail } from "class-validator";
-import { Trip } from "./Trip";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 import { Point } from "../utils";
 import { Feedback } from "./Feedback";
+import { Account } from "./Account";
+import { Reservation } from "./Reservation";
 
 @Entity()
-@ObjectType()
-export class User extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  @Field()
-  firstName: string;
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  lastName?: string;
-
-  @Column({ type: "date", nullable: true })
-  @Field({ nullable: true })
-  dateOfBirth?: string;
-
-  @Column({ length: 45, nullable: true })
-  @Field({ nullable: true })
-  phone?: string;
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  workAddress?: string;
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  homeAddress?: string;
-
-  @Column("point", { nullable: true })
-  @Field({ nullable: true })
-  workLocation?: Point;
-
-  @Column("point", { nullable: true })
-  @Field({ nullable: true })
-  homeLocation?: Point;
-
+export class User extends Account {
   @Column({ unique: true })
-  @Field()
-  @IsEmail()
   email: string;
 
   @Column()
   password: string;
 
-  @ManyToMany(() => Trip)
-  @Field(() => [Trip])
-  @JoinTable()
-  trips: Trip[];
+  @Column({ length: 256, nullable: true })
+  workAddress?: string;
+
+  @Column("point", { nullable: true })
+  workLocation?: Point;
+
+  @ManyToMany(() => Reservation, (reservation: Reservation) => reservation.user)
+  reservations: Reservation[];
 
   @OneToMany(() => Feedback, (ticket: Feedback) => ticket.user)
-  @Field(() => [Feedback])
   tickets: Feedback[];
 }

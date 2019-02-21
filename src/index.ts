@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema, Query, Resolver } from "type-graphql";
 import * as Express from "express";
-import { ConnectionOptions, createConnection } from "typeorm";
+import { createConnection } from "typeorm";
 import { UserResolver } from "./resolvers/UserResolver";
 import * as session from "express-session";
 import { TripResolver } from "./resolvers/TripResolver";

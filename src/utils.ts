@@ -1,4 +1,4 @@
-import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class Point {
@@ -9,13 +9,5 @@ export class Point {
   x: number;
 }
 
-export enum TripStatus {
-  Planned = "planned", // sue me. it was either unstarted or unbegun
-  Started = "started",
-  Completed = "completed",
-  Cancelled = "cancelled",
-}
-
-registerEnumType(TripStatus, { name: "tripStatus" });
 
 export type Lazy<T extends object> = Promise<T> | T;
