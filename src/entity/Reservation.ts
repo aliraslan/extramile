@@ -30,7 +30,12 @@ export class Reservation extends BaseEntity {
   @Field()
   pickupAddress: string;
 
-  @Column("point")
+  @Column("point", {
+    transformer: {
+      from: (p: Point) => p,
+      to: (p: Point) => `${p.longitude},${p.latitude}`
+    }
+  })
   @Field(() => Point)
   pickupLocation: Point;
 
@@ -38,8 +43,12 @@ export class Reservation extends BaseEntity {
   @Field()
   dropOffAddress: string;
 
-  @Column("point")
-  @Field(() => Point)
+  @Column("point", {
+    transformer: {
+      from: (p: Point) => p,
+      to: (p: Point) => `${p.longitude},${p.latitude}`
+    }
+  }) @Field(() => Point)
   dropOffLocation: Point;
 
   @ManyToOne(() => User, (user: User) => user.reservations)

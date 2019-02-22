@@ -3,11 +3,11 @@ import { Field, Float, InputType, ObjectType } from "type-graphql";
 @ObjectType()
 @InputType("LonLat")
 export class Point {
-  @Field(() => Float, { name: "longitude" })
-  y: number;
+  @Field(() => Float)
+  longitude: number;
 
-  @Field(() => Float, { name: "latitude" })
-  x: number;
+  @Field(() => Float)
+  latitude: number;
 }
 
 

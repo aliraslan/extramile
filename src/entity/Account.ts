@@ -35,7 +35,14 @@ export abstract class Account extends BaseEntity {
   @Field({ nullable: true })
   homeAddress?: string;
 
-  @Column({ type: "point", nullable: true })
+  @Column({
+    type: "point",
+    nullable: true,
+    transformer: {
+      from: (p: Point) => p,
+      to: (p: Point) => `${p.longitude},${p.latitude}`
+    }
+  })
   @Field(() => Point, { nullable: true })
   homeLocation?: Point;
 

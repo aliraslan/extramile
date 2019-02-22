@@ -39,7 +39,6 @@ export class UserResolver {
                  @Arg("phone") phone: string,
                  @Arg("password") password: string,
   ): Promise<User> {
-    // const hash = await argon2.hash(password);
     const hash = await bcrypt.hash(password, 2);
     return await User.create({
       email, firstName, password: hash, lastName, phone

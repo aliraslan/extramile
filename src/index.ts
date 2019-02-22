@@ -9,6 +9,9 @@ import * as path from "path";
 import { FeedbackResolver } from "./resolvers/FeedbackResolver";
 import { TripResolver } from "./resolvers/TripResolver";
 import { UserResolver } from "./resolvers/UserResolver";
+import { BusResolver } from "./resolvers/BusResolver";
+import { DriverResolver } from "./resolvers/DriverResolver";
+import { ReservationResolver } from "./resolvers/ReservationResolver";
 
 @Resolver()
 export class ConnectionResolver {
@@ -31,7 +34,10 @@ const main: any = async () => {
       ConnectionResolver,
       UserResolver,
       TripResolver,
-      FeedbackResolver
+      FeedbackResolver,
+      BusResolver,
+      DriverResolver,
+      ReservationResolver
     ]
   });
 

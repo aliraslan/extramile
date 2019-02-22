@@ -19,7 +19,14 @@ export class User extends Account {
   @Field({ nullable: true })
   workAddress?: string;
 
-  @Column("point", { nullable: true })
+  @Column({
+    type: "point",
+    nullable: true,
+    transformer: {
+      from: (p: Point) => p,
+      to: (p: Point) => `${p.longitude},${p.latitude}`
+    }
+  })
   @Field(() => Point, { nullable: true })
   workLocation?: Point;
 
