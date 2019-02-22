@@ -1,6 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 import { Field, ObjectType } from "type-graphql";
+import { Lazy } from "../utils";
 
 @Entity()
 @ObjectType()
@@ -9,9 +10,9 @@ export class Feedback extends BaseEntity {
   @Field()
   id: number;
 
-  @ManyToOne(() => User, (user: User) => user.tickets)
+  @ManyToOne(() => User, (user: User) => user.tickets, { lazy: true })
   @Field(() => User)
-  user: User;
+  user: Lazy<User>;
 
   @Column()
   @Field()

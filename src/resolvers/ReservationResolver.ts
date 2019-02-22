@@ -18,22 +18,23 @@ export class ReservationResolver {
                     @Arg("dropOffLocation", () => Point) dropOffLocation: Point,
                     @Arg("dropOffTime") dropOffTime: string,
                     @Ctx() context: any
-  ): Promise<Reservation | null> {
-    // TODO check if this monstrosity actually works or if it's a heisenbug
+  ): Promise<Reservation | undefined> {
+    // TODO Will fix this tomorrow (issue: https://github.com/typeorm/typeorm/issues/3576)
     if (!context.req.session.userId) {
       throw new AuthenticationError('Must be Authenticated');
     }
-
     const user = await User.findOne(context.req.session.userId, { relations: ["reservations"] });
 
     const trip = await Trip.findOne(tripId, { relations: ["bus", "reservations"] });
+
     if (!trip || !user || trip.status !== TripStatus.Planned) {
       throw new UserInputError("Trip does not exist!")
     }
 
-    if (trip.reservations && trip.reservations.length && trip.bus.numberOfSeats <= trip.reservations.length) {
+    if (trip.reservations && (await trip.reservations).length && (await trip.bus).numberOfSeats <= (await trip.reservations).length) {
       throw new UserInputError("Trip is full.")
     }
+
     console.log(dropOffLocation, typeof dropOffLocation);
 
     let reservation = await Reservation.create({
@@ -47,12 +48,14 @@ export class ReservationResolver {
       pickupLocation
     });
 
-    user.reservations.push(reservation);
-    trip.reservations.unshift(reservation);
+    (await user.reservations).push(reservation);
+    (await trip.reservations).unshift(reservation);
 
     await user.save();
     await trip.save();
+
     return await reservation.save();
+
   }
 
   @Mutation(() => Reservation, { nullable: true })

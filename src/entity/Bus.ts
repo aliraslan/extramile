@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "t
 import { Trip } from "./Trip";
 import { BusType } from "../Enums";
 import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Lazy } from "../utils";
 
 @Entity()
 @ObjectType()
@@ -34,7 +35,7 @@ export class Bus extends BaseEntity {
   @Field()
   model: string;
 
-  @OneToMany(() => Trip, (trip: Trip) => trip.bus)
+  @OneToMany(() => Trip, (trip: Trip) => trip.bus, { lazy: true })
   @Field(() => [Trip])
-  trips: Trip[];
+  trips: Lazy<Trip[]>;
 }

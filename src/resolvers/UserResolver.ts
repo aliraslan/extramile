@@ -7,9 +7,7 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async current(@Ctx() context: any): Promise<User | undefined> {
     if (context.req.session.userId) {
-      const user = await User.findOne(context.req.session.userId, {
-        relations: ["reservations", "tickets"]
-      });
+      const user = await User.findOne(context.req.session.userId);
       console.log(user);
       return user;
     } else {

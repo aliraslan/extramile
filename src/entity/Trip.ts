@@ -4,6 +4,7 @@ import { Driver } from "./Driver";
 import { Reservation } from "./Reservation";
 import { TripStatus } from "../Enums";
 import { Field, ID, ObjectType } from "type-graphql";
+import { Lazy } from "../utils";
 
 @Entity()
 @ObjectType()
@@ -32,15 +33,15 @@ export class Trip extends BaseEntity {
   @Field()
   stops: string;
 
-  @ManyToOne(() => Bus, (bus: Bus) => bus.trips)
+  @ManyToOne(() => Bus, (bus: Bus) => bus.trips, { lazy: true })
   @Field(() => Bus)
-  bus: Bus;
+  bus: Lazy<Bus>;
 
-  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.trip)
+  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.trip, { lazy: true })
   @Field(() => [Reservation])
-  reservations: Reservation[];
+  reservations: Lazy<Reservation[]>;
 
-  @ManyToOne(() => Driver, (driver: Driver) => driver.trips)
+  @ManyToOne(() => Driver, (driver: Driver) => driver.trips, { lazy: true })
   @Field(() => Driver)
-  driver: Driver;
+  driver: Lazy<Driver>;
 }

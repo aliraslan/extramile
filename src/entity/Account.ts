@@ -40,7 +40,9 @@ export abstract class Account extends BaseEntity {
     nullable: true,
     transformer: {
       from: (p: Point) => p,
-      to: (p: Point) => `${p.longitude},${p.latitude}`
+      to: (p?: Point) =>
+        p ? `${p.longitude},${p.latitude}` : null
+
     }
   })
   @Field(() => Point, { nullable: true })

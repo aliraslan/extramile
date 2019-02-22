@@ -9,7 +9,7 @@ export class DriverResolver {
     @Arg("lastName") lastName: string,
     @Arg("phone") phone: string
   ): Promise<Driver> {
-    return await Driver.create({ lastName, firstName, phone, }).save()
+    return await Driver.create({ lastName, firstName, phone }).save()
   }
 
 

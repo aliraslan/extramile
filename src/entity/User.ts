@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { Point } from "../utils";
+import { Lazy, Point } from "../utils";
 import { Feedback } from "./Feedback";
 import { Account } from "./Account";
 import { Reservation } from "./Reservation";
@@ -24,17 +24,17 @@ export class User extends Account {
     nullable: true,
     transformer: {
       from: (p: Point) => p,
-      to: (p: Point) => `${p.longitude},${p.latitude}`
+      to: (p?: Point) => p ? `${p.longitude},${p.latitude}` : null
     }
   })
   @Field(() => Point, { nullable: true })
   workLocation?: Point;
 
-  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user)
+  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user, { lazy: true })
   @Field(() => [Reservation])
-  reservations: Reservation[];
+  reservations: Lazy<Reservation[]>;
 
-  @OneToMany(() => Feedback, (ticket: Feedback) => ticket.user)
+  @OneToMany(() => Feedback, (ticket: Feedback) => ticket.user, { lazy: true })
   @Field(() => [Feedback])
-  tickets: Feedback[];
+  tickets: Lazy<Feedback[]>;
 }

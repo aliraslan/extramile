@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "t
 import { User } from "./User";
 import { Trip } from "./Trip";
 import { ReservationStatus } from "../Enums";
-import { Point } from "../utils";
+import { Lazy, Point } from "../utils";
 import { Field, ObjectType } from "type-graphql";
 
 // Sorry Beshoi.
@@ -33,7 +33,7 @@ export class Reservation extends BaseEntity {
   @Column("point", {
     transformer: {
       from: (p: Point) => p,
-      to: (p: Point) => `${p.longitude},${p.latitude}`
+      to: (p?: Point) => p ? `${p.longitude},${p.latitude}` : null
     }
   })
   @Field(() => Point)
@@ -46,22 +46,22 @@ export class Reservation extends BaseEntity {
   @Column("point", {
     transformer: {
       from: (p: Point) => p,
-      to: (p: Point) => `${p.longitude},${p.latitude}`
+      to: (p?: Point) => p ? `${p.longitude},${p.latitude}` : null
     }
   })
   @Field(() => Point)
   dropOffLocation: Point;
 
-  @ManyToOne(() => User, (user: User) => user.reservations)
+  @ManyToOne(() => User, (user: User) => user.reservations, { lazy: true })
   @Field(() => User)
-  user: User;
+  user: Lazy<User>;
 
   @Column("uuid")
   userId: string;
 
-  @ManyToOne(() => Trip, (trip: Trip) => trip.reservations)
+  @ManyToOne(() => Trip, (trip: Trip) => trip.reservations, { lazy: true })
   @Field(() => Trip)
-  trip: Trip;
+  trip: Lazy<Trip>;
 
   @Column("uuid")
   tripId: string;

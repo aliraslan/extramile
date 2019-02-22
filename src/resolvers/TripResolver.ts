@@ -62,7 +62,7 @@ export class TripResolver {
       throw new UserInputError("Invalid Driver, driver doesn't exist");
     }
 
-    if (trip.driver.id != driverId) {
+    if ((await trip.driver).id != driverId) {
       throw new UserInputError(
         "Invalid Driver for trip, driver id and trip driver id mismatch"
       );
