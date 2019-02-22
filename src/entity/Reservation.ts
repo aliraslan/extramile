@@ -48,16 +48,23 @@ export class Reservation extends BaseEntity {
       from: (p: Point) => p,
       to: (p: Point) => `${p.longitude},${p.latitude}`
     }
-  }) @Field(() => Point)
+  })
+  @Field(() => Point)
   dropOffLocation: Point;
 
   @ManyToOne(() => User, (user: User) => user.reservations)
   @Field(() => User)
   user: User;
 
+  @Column("uuid")
+  userId: string;
+
   @ManyToOne(() => Trip, (trip: Trip) => trip.reservations)
   @Field(() => Trip)
   trip: Trip;
+
+  @Column("uuid")
+  tripId: string;
 
   @Column("enum", { enum: ReservationStatus, default: ReservationStatus.Planned })
   @Field(() => ReservationStatus)

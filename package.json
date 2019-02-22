@@ -27,13 +27,13 @@
     "express-session": "^1.15.6",
     "graphql": "^14.1.1",
     "ioredis": "^4.6.2",
+    "moment": "^2.24.0",
     "pg": "^7.8.0",
     "reflect-metadata": "^0.1.10",
     "type-graphql": "^0.16.0",
     "typeorm": "0.2.13"
   },
   "scripts": {
-    "postinstall": "yarn --cwd frontend install",
     "clean": "rimraf build node_modules frontend/build frontend/node_modules",
     "dev": "concurrently \"yarn start:server\" \"yarn start:frontend\" ",
     "start:server": "ts-node-dev --respawn src/index.ts",

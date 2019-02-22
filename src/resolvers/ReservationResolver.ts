@@ -3,14 +3,14 @@ import { Reservation } from "../entity/Reservation";
 import { Point } from "../utils";
 import { User } from "../entity/User";
 import { Trip } from "../entity/Trip";
-import { TripStatus } from "../Enums";
-import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import { ReservationStatus, TripStatus } from "../Enums";
+import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 
 
 @Resolver()
 export class ReservationResolver {
   @Mutation(() => Reservation, { nullable: true })
-  async reserveTrip(@Arg("tripId", () => ID) tripId: number,
+  async reserveTrip(@Arg("tripId", () => ID) tripId: string,
                     @Arg("pickupAddress") pickupAddress: string,
                     @Arg("pickupLocation", () => Point) pickupLocation: Point,
                     @Arg("pickupTime") pickupTime: string,
@@ -54,4 +54,31 @@ export class ReservationResolver {
     await trip.save();
     return await reservation.save();
   }
+
+  @Mutation(() => Reservation, { nullable: true })
+  async boardTrip(@Arg("tripId", () => ID) tripId: string,
+                  @Arg("userId", () => ID) userId: string): Promise<Reservation> {
+    const user = await User.findOne(userId);
+    const trip = await Trip.findOne(tripId, { relations: ["reservations"] });
+
+    if (!user)
+      throw new UserInputError("Invalid User");
+
+    if (!trip)
+      throw new UserInputError("Invalid Trip");
+
+    // @ts-ignore // get the first planned reservation.
+    const [head, ...rest] = trip.reservations.filter((reservation: Reservation) =>
+      // get all reservations that are planned by user
+      reservation.userId == userId && reservation.status == ReservationStatus.Planned
+    );
+
+    // check if reservation exists
+    if (!head)
+      throw new ApolloError("Reservation doesn't exist for this user");
+
+    head.status = ReservationStatus.Boarded;
+    return await head.save()
+  }
+
 }
