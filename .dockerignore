@@ -1,0 +1,9 @@
+*
+
+!./package.json
+!./yarn.lock
+!./frontend/package.json
+!./frontend/yarn.lock
+!./build
+!./ormconfig.json
+

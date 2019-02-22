@@ -12,6 +12,9 @@ import { UserResolver } from "./resolvers/UserResolver";
 import { BusResolver } from "./resolvers/BusResolver";
 import { DriverResolver } from "./resolvers/DriverResolver";
 import { ReservationResolver } from "./resolvers/ReservationResolver";
+import * as connectRedis from 'connect-redis';
+import { redis } from "./redis";
+
 
 @Resolver()
 export class ConnectionResolver {
@@ -48,9 +51,14 @@ const main: any = async () => {
   });
 
   const app = Express();
-  // TODO (important, before deploying) change this to redis
+
+  const RedisStore = connectRedis(session);
+
   app.use(
     session({
+      store: new RedisStore({
+        client: redis as any
+      }),
       secret: "shh",
       resave: false,
       saveUninitialized: false,
