@@ -21,7 +21,7 @@
     }
   },
   {
-    "name": "prod",
+    "name": "production",
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
