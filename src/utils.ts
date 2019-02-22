@@ -1,6 +1,7 @@
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, Float, InputType, ObjectType } from "type-graphql";
 
 @ObjectType()
+@InputType("LonLat")
 export class Point {
   @Field(() => Float, { name: "longitude" })
   y: number;

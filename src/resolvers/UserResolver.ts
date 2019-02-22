@@ -7,9 +7,11 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async current(@Ctx() context: any): Promise<User | undefined> {
     if (context.req.session.userId) {
-      const passenger = await User.findOne(context.req.session.userId, { relations: ["tickets", 'trips'] });
-      console.log(passenger);
-      return passenger;
+      const user = await User.findOne(context.req.session.userId, {
+        relations: ["reservations", "tickets"]
+      });
+      console.log(user);
+      return user;
     } else {
       return undefined;
     }
@@ -33,12 +35,14 @@ export class UserResolver {
   @Mutation(() => User)
   async Register(@Arg("email") email: string,
                  @Arg("firstName") firstName: string,
-                 @Arg("password") password: string
+                 @Arg("lastName") lastName: string,
+                 @Arg("phone") phone: string,
+                 @Arg("password") password: string,
   ): Promise<User> {
     // const hash = await argon2.hash(password);
     const hash = await bcrypt.hash(password, 2);
     return await User.create({
-      email, firstName, password: hash
+      email, firstName, password: hash, lastName, phone
     }).save()
   }
 }

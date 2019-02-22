@@ -1,34 +1,46 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Point } from "../utils";
+import { Field, ID, InterfaceType } from "type-graphql";
+import { JoinColumn } from "typeorm/decorator/relations/JoinColumn";
 import { Photo } from "./Photo";
 
 @Entity()
-export class Account extends BaseEntity {
+@InterfaceType()
+export abstract class Account extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
+  @Field(() => ID)
   id: string;
 
-  @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  @Field()
   createdAt: string;
 
   @Column({ length: 64 })
+  @Field()
   firstName: string;
 
   @Column({ length: 64 })
+  @Field()
   lastName: string;
 
-  @Column({ length: 32 })
+  @Column({ length: 32, unique: true })
+  @Field()
   phone: string;
 
   @Column({ type: "date", nullable: true })
+  @Field({ nullable: true })
   dateOfBirth?: string;
 
   @Column({ length: 256, nullable: true })
+  @Field({ nullable: true })
   homeAddress?: string;
 
-  @Column("point", { nullable: true })
+  @Column({ type: "point", nullable: true })
+  @Field(() => Point, { nullable: true })
   homeLocation?: Point;
 
   @OneToOne(() => Photo, (photo: Photo) => photo.owner, { nullable: true })
+  @Field(() => Photo, { nullable: true })
   @JoinColumn()
   photo?: Photo;
 }
