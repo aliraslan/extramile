@@ -36,6 +36,9 @@ const main: any = async () => {
       type: "postgres",
       host: "localhost",
       port: 5432,
+      extra: {
+        ssl: true
+      },
       url: process.env.DATABASE_URL,
       "synchronize": true,
       logging: "all",

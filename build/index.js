@@ -49,6 +49,9 @@ const main = () => __awaiter(this, void 0, void 0, function* () {
         type: "postgres",
         host: "localhost",
         port: 5432,
+        extra: {
+            ssl: true
+        },
         url: process.env.DATABASE_URL,
         "synchronize": true,
         logging: "all",
