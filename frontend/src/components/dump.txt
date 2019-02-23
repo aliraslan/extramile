@@ -1,0 +1,34 @@
+// Location Tracking
+// let myLocation = {
+//   lat: 0.0,
+//   lng: 0.0
+// };
+// let desloc: string;
+// let locationOptions = {
+//   enableHighAccuracy: true,
+//   timeout: 5000,
+//   maximumAge: 0
+// };
+// function getLocation() {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       showPosition,
+//       locationError,
+//       locationOptions
+//     );
+//     desloc = myLocation.lat.toString() + " , " + myLocation.lng.toString();
+//   }
+// }
+// function locationError(err: any) {
+//   console.warn(`ERROR(${err.code}): ${err.message}`);
+// }
+// //function that retrieves the position
+// function showPosition(position: any) {
+//   var location = {
+//     lat: position.coords.latitude,
+//     lng: position.coords.longitude
+//   };
+//   console.log(location);
+//   myLocation = location;
+// }
+// End Location Tracking
