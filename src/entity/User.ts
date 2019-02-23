@@ -24,7 +24,7 @@ export class User extends Account {
     nullable: true,
     transformer: {
       from: p => p,
-      to: p => p ? `${p.x},${p.x}` : null
+      to: p => p ? `${p.x},${p.y}` : null
     }
   })
   @Field(() => Point, { nullable: true })

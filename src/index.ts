@@ -12,6 +12,7 @@ import {
   FeedbackResolver,
   ReservationResolver,
   TripResolver,
+  TripStopResolver,
   UserResolver
 } from "./resolvers";
 import * as connectRedis from 'connect-redis';
@@ -31,12 +32,11 @@ export class ConnectionResolver {
 
 const main: any = async () => {
   await createConnection(process.env.NODE_ENV == "production" ? "production" : "default");
-  // TODO (IMPORTANT) add lazy column and table joining depending
-  //  on the query i.e. if a `current` query requests the trips
-  //  automatically join the trips column. instead of proactively doing it.
+  // TODO move to redis for subscriptions instead of the default option.
 
   const schema = await buildSchema({
     resolvers: [
+      TripStopResolver,
       ConnectionResolver,
       UserResolver,
       TripResolver,
@@ -90,6 +90,7 @@ const main: any = async () => {
       res.sendFile(path.resolve(__dirname, "public", "index.html"));
     });
 
+    // Handles the subscriptions
     const httpServer = createServer(App);
     apolloServer.installSubscriptionHandlers(httpServer);
 

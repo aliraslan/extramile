@@ -2,21 +2,24 @@ import { Arg, ID, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscri
 import { ApolloError, UserInputError } from "apollo-server-express";
 import { Trip } from "../entity/Trip";
 import { Driver } from "../entity/Driver";
-import { Bus } from "../entity/Bus";
 import { TripStatus } from "../Enums";
 import * as moment from "moment";
 import { LocationPayload, Point, TripLocation } from "../utils";
+import { TripStop } from "../entity/TripStop";
+import { getRepository } from "typeorm";
 
 @Resolver()
 export class TripResolver {
+  ids: string[];
   private autoIncrement = 0;
 
   @Query(() => [Trip], { nullable: true })
   async trips(
     @Arg("take", { defaultValue: 100 }) take: number,
     @Arg("skip", { defaultValue: 0 }) skip: number,
-    @Arg("status", () => TripStatus, { nullable: true }) status?: TripStatus
+    @Arg("status", () => TripStatus, { nullable: true }) status?: TripStatus,
   ): Promise<Trip[]> {
+
     if (status)
       return await Trip.find({
         take,
@@ -29,24 +32,39 @@ export class TripResolver {
     });
   }
 
-  @Mutation(() => Trip, { nullable: true })
+  @Mutation(() => Trip, { nullable: true, description: "creates a trip without the stops." })
   async createTrip(
     @Arg("busId", () => ID) busId: number,
-    @Arg("driverId", () => ID) driverId: number,
-    @Arg("stops") stops: string,
+    @Arg("driverId", () => ID) driverId: string,
     @Arg("startsAt", { description: "The time the trip starts at" })
       startsAt: string
   ): Promise<Trip | null> {
-    const bus = await Bus.findOne(busId);
-    const driver = await Driver.findOne(driverId);
-
     return await Trip.create({
       startedAt: startsAt,
-      bus,
-      driver,
-      stops
+      busId,
+      driverId,
     }).save();
   }
+
+  @Mutation(() => Boolean)
+  async setStops(
+    @Arg("stops", () => [String], { description: "array of TripStop ids" }) ids: string[],
+    @Arg("tripId") tripId: string
+  ): Promise<Boolean> {
+    const stops = await TripStop.findByIds(ids);
+    const trip = await Trip.findOne(tripId);
+
+    if (!trip)
+      throw new UserInputError("Invalid Trip ID");
+
+    for (let stop of stops) {
+      stop.tripId = tripId;
+    }
+
+    getRepository(TripStop).save(stops);
+    return true;
+  }
+
 
   @Mutation(() => Trip)
   async StartTrip(

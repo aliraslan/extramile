@@ -140,6 +140,13 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/geokdbush@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/geokdbush/-/geokdbush-1.1.1.tgz#c0d649048e732235edce7fb4f3451795a3010a1c"
+  integrity sha512-074r4pnTgXQeUfUJiFhkZKfgw3i9Fp4VL2HiVzDvmBcHgxWcJIfpd5jM9eKLX4+jJkVvsNqKwwkyAMOJYJy+Bg==
+  dependencies:
+    "@types/kdbush" "*"
+
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -160,6 +167,11 @@
   integrity sha512-ZAXWkcij8wN+0eNNM1ofl8kzWvbPIwibBZcDa/8m32wqBcX7S4r+QRA59fob1OD1HQhEFVC16XFN8P5ZgSF1yQ==
   dependencies:
     "@types/node" "*"
+
+"@types/kdbush@*", "@types/kdbush@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/kdbush/-/kdbush-1.0.2.tgz#ec1032d7e02ef727f62e3753d31e368e7fdecbdf"
+  integrity sha512-G2u0qfcwhhUZpFuy/tJRM7ajvSjOaSB4JqvG+FNx+0owVyOI+QME2ad6CWXDG96tZm9ms/KZRSo/8U1wrE6m4A==
 
 "@types/long@^4.0.0":
   version "4.0.0"
@@ -1067,6 +1079,13 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+geokdbush@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/geokdbush/-/geokdbush-1.1.0.tgz#aa5e8e7953a6594b40a85fbdb61059af0f51468f"
+  integrity sha1-ql6OeVOmWUtAqF+9thBZrw9RRo8=
+  dependencies:
+    tinyqueue "^1.2.2"
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -1373,6 +1392,11 @@ json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
+
+kdbush@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"
+  integrity sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==
 
 lcid@^1.0.0:
   version "1.0.0"
@@ -2515,6 +2539,11 @@ through@2:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+tinyqueue@^1.2.2:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-1.2.3.tgz#b6a61de23060584da29f82362e45df1ec7353f3d"
+  integrity sha512-Qz9RgWuO9l8lT+Y9xvbzhPT2efIUIFd69N7eF7tJ9lnQl0iLj1M7peK7IoUGZL9DJHw9XftqLreccfxcQgYLxA==
 
 toidentifier@1.0.0:
   version "1.0.0"

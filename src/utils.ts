@@ -23,6 +23,15 @@ export class Point {
   y: number;
 }
 
+@InputType("TripStopInput")
+export class TripStopInput {
+  @Field(() => Point)
+  location: Point;
+
+  @Field()
+  address: number;
+}
+
 @ObjectType()
 export class TripLocation {
   @Field(() => ID)
