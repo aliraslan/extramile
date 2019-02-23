@@ -5,6 +5,7 @@ import { User } from "../entity/User";
 import { Trip } from "../entity/Trip";
 import { ReservationStatus, TripStatus } from "../Enums";
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
+import { getRepository } from "typeorm";
 
 
 @Resolver()
@@ -19,13 +20,19 @@ export class ReservationResolver {
                     @Arg("dropOffTime") dropOffTime: string,
                     @Ctx() context: any
   ): Promise<Reservation | undefined> {
-    // TODO Will fix this tomorrow (issue: https://github.com/typeorm/typeorm/issues/3576)
     if (!context.req.session.userId) {
       throw new AuthenticationError('Must be Authenticated');
     }
-    const user = await User.findOne(context.req.session.userId, { relations: ["reservations"] });
 
-    const trip = await Trip.findOne(tripId, { relations: ["bus", "reservations"] });
+    console.log(`dropOffLocation `, dropOffLocation);
+    const { userId }: { userId: string } = context.req.session;
+    const userRepository = getRepository(User);
+    const tripRepository = getRepository(Trip);
+    const reservationRepository = getRepository(Reservation);
+
+    const user = await userRepository.findOne(userId, { relations: ["reservations"] });
+
+    const trip = await tripRepository.findOne(tripId, { relations: ["bus", "reservations"] });
 
     if (!trip || !user || trip.status !== TripStatus.Planned) {
       throw new UserInputError("Trip does not exist!")
@@ -37,24 +44,24 @@ export class ReservationResolver {
 
     console.log(dropOffLocation, typeof dropOffLocation);
 
-    let reservation = await Reservation.create({
-      trip,
-      user,
+    const reservation = await Reservation.create({
+      tripId,
+      userId,
       pickupAddress,
       pickupTime,
       dropOffAddress,
       dropOffTime,
-      dropOffLocation,
-      pickupLocation
+      dropOffLocation: { x: dropOffLocation.x, y: dropOffLocation.y },
+      pickupLocation: { x: pickupLocation.x, y: pickupLocation.y }
     });
 
     (await user.reservations).push(reservation);
     (await trip.reservations).unshift(reservation);
 
-    await user.save();
-    await trip.save();
+    await userRepository.save(user);
+    await tripRepository.save(trip);
 
-    return await reservation.save();
+    return await reservationRepository.save(reservation);
 
   }
 
@@ -71,7 +78,8 @@ export class ReservationResolver {
       throw new UserInputError("Invalid Trip");
 
     // @ts-ignore // get the first planned reservation.
-    const [head, ...rest] = trip.reservations.filter((reservation: Reservation) =>
+    // noinspection JSUnusedLocalSymbols
+    const [head, ...rest] = (await trip.reservations).filter((reservation: Reservation) =>
       // get all reservations that are planned by user
       reservation.userId == userId && reservation.status == ReservationStatus.Planned
     );

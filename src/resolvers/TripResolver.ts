@@ -1,10 +1,11 @@
 import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
-import { UserInputError } from "apollo-server-express";
+import { ApolloError, UserInputError } from "apollo-server-express";
 import { Trip } from "../entity/Trip";
 import { Driver } from "../entity/Driver";
 import { Bus } from "../entity/Bus";
 import { TripStatus } from "../Enums";
 import * as moment from "moment";
+import { Point } from "../utils";
 
 @Resolver()
 export class TripResolver {
@@ -19,12 +20,10 @@ export class TripResolver {
         take,
         skip,
         where: { status },
-        relations: ["reservations", "bus", "driver"]
       });
     return await Trip.find({
       take,
       skip,
-      relations: ["reservations", "bus", "driver"]
     });
   }
 
@@ -68,22 +67,25 @@ export class TripResolver {
       );
     }
 
+    if (trip.status != TripStatus.Planned) {
+      throw new ApolloError(`The trip couldn't be started because it was ${trip.status}`);
+    }
+
     const startsAt = moment(trip.startedAt);
     const now = moment();
 
-    if (now < startsAt.subtract(10, "minutes")) {
+    const tripWindowOpenTime = startsAt.clone().subtract(10, "minutes");
+    const tripWindowCloseTime = startsAt.clone().add(10, "minutes");
+
+    if (now < tripWindowOpenTime) {
       throw new UserInputError(
-        `Incorrect time. you can start in ${startsAt
-          .subtract(10, "minutes")
-          .fromNow()}`
+        `Incorrect time. the 10 min window opens ${tripWindowOpenTime.fromNow()}`
       );
     }
 
-    if (now > startsAt.add(10, "minutes")) {
+    if (now > tripWindowCloseTime) {
       throw new UserInputError(
-        `Incorrect time. the 10 minute window closed ${startsAt
-          .add(10, "minutes")
-          .fromNow()}`
+        `Incorrect time. the 10 minute window closed ${tripWindowCloseTime.fromNow()}`
       );
     }
 

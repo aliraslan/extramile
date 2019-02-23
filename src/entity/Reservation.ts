@@ -32,8 +32,8 @@ export class Reservation extends BaseEntity {
 
   @Column("point", {
     transformer: {
-      from: (p: Point) => p,
-      to: (p?: Point) => p ? `${p.longitude},${p.latitude}` : null
+      from: p => p,
+      to: p => `${p.x},${p.y}`
     }
   })
   @Field(() => Point)
@@ -45,8 +45,8 @@ export class Reservation extends BaseEntity {
 
   @Column("point", {
     transformer: {
-      from: (p: Point) => p,
-      to: (p?: Point) => p ? `${p.longitude},${p.latitude}` : null
+      from: p => p,
+      to: p => `${p.x},${p.y}`
     }
   })
   @Field(() => Point)
