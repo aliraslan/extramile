@@ -8,7 +8,7 @@
       "es2017",
       "esnext"
     ],
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./build",
     "moduleResolution": "node",
     "declaration": false,
