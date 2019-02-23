@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
-import { Button, Input, Icon } from "antd";
+import { Button, Icon, Input } from "antd";
 import "./styling/Pronto.css";
+import { Link } from "react-router-dom";
+
 const LoginMutation = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     Login(email: $email, password: $password) {
@@ -22,13 +24,13 @@ export const Login = () => {
       {(login, { data, loading, error }) => {
         if (data) {
           // you're now logged in!
-          return <Redirect to="/map" />; // Pending change
+          return <Redirect to="/map"/>; // Pending change
         }
 
         return (
           <div className="prontoView">
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }}/>}
               placeholder="Username"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -40,7 +42,7 @@ export const Login = () => {
               }}
             />
             <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }}/>}
               placeholder="Password"
               style={{
                 position: "absolute",
@@ -64,16 +66,16 @@ export const Login = () => {
             >
               Login
             </Button>
-            <a
+            <Link
               style={{
                 position: "absolute",
                 top: "70%",
                 left: "45%"
               }}
-              href="/register"
+              to="/register"
             >
               or sign up!
-            </a>
+            </Link>
           </div>
         );
       }}

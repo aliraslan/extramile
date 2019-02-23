@@ -2,17 +2,26 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
-import { Button, Input, Icon } from "antd";
+import { Button, Input } from "antd";
 import "./styling/Pronto.css";
+import { Link } from "react-router-dom";
 // // TODO
 // Registering logs you in.
 const RegisterMutation = gql`
   mutation RegisterMutation(
-    $email: String!
     $firstName: String!
+    $email: String!
     $password: String!
+    $lastName: String!
+    $phone: String!
   ) {
-    Register(email: $email, password: $password, firstName: $firstName) {
+    Register(
+      firstName: $firstName
+      email: $email
+      password: $password
+      lastName: $lastName,
+      phone: $phone
+    ) {
       id
     }
   }
@@ -21,25 +30,50 @@ const RegisterMutation = gql`
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setfirstName] = useState("");
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  // TODO replace option absolute with flex box
   return (
     <Mutation mutation={RegisterMutation}>
       {(register, { data, loading, error }) => {
         if (data) {
           // you're now registered, log in
-          return <Redirect to="/app" />;
+          return <Redirect to="/app"/>;
         }
 
         return (
           <div className="prontoView">
             <Input
-              placeholder="Full Name"
+              placeholder="First Name"
               value={firstName}
-              onChange={e => setfirstName(e.target.value)}
+              onChange={e => setFirstName(e.target.value)}
               style={{
                 position: "absolute",
-                top: "30%",
+                top: "15%",
+                left: "15%",
+                width: "70vw"
+              }}
+            />
+            <Input
+              placeholder="Last Name"
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+              style={{
+                position: "absolute",
+                top: "25%",
+                left: "15%",
+                width: "70vw"
+              }}
+            />
+            <Input
+              placeholder="Phone number"
+              value={phone}
+              type="number"
+              onChange={e => setPhone(e.target.value)}
+              style={{
+                position: "absolute",
+                top: "35%",
                 left: "15%",
                 width: "70vw"
               }}
@@ -50,7 +84,7 @@ export const Register = () => {
               onChange={e => setEmail(e.target.value)}
               style={{
                 position: "absolute",
-                top: "40%",
+                top: "45%",
                 left: "15%",
                 width: "70vw"
               }}
@@ -59,7 +93,7 @@ export const Register = () => {
               placeholder="Password"
               style={{
                 position: "absolute",
-                top: "50%",
+                top: "55%",
                 left: "15%",
                 width: "70vw"
               }}
@@ -70,7 +104,7 @@ export const Register = () => {
             <Button
               type="primary"
               onClick={() =>
-                register({ variables: { email, password, firstName } })
+                register({ variables: { email, password, firstName, lastName, phone } })
               }
               style={{
                 position: "absolute",
@@ -81,16 +115,16 @@ export const Register = () => {
             >
               Register
             </Button>
-            <a
+            <Link
               style={{
                 position: "absolute",
-                top: "75%",
+                top: "70%",
                 left: "45%"
               }}
-              href="/app"
+              to="/app"
             >
               or log in!
-            </a>
+            </Link>
           </div>
         );
       }}
