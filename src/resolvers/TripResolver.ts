@@ -1,14 +1,16 @@
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, ID, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
 import { ApolloError, UserInputError } from "apollo-server-express";
 import { Trip } from "../entity/Trip";
 import { Driver } from "../entity/Driver";
 import { Bus } from "../entity/Bus";
 import { TripStatus } from "../Enums";
 import * as moment from "moment";
-import { Point } from "../utils";
+import { LocationPayload, Point, TripLocation } from "../utils";
 
 @Resolver()
 export class TripResolver {
+  private autoIncrement = 0;
+
   @Query(() => [Trip], { nullable: true })
   async trips(
     @Arg("take", { defaultValue: 100 }) take: number,
@@ -91,5 +93,24 @@ export class TripResolver {
 
     trip.status = TripStatus.Started;
     return await trip.save();
+  }
+
+  @Subscription({ topics: ({ args }) => args.tripId })
+  TripLocation(
+    // @ts-ignore
+    @Arg("tripId") tripId: string,
+    @Root() { id, location }: LocationPayload,
+  ): TripLocation {
+    return { id, location, date: new Date() };
+  }
+
+  @Mutation(() => Boolean, { description: "returns true if location was received by the server" })
+  async UpdateTripLocation(@Arg("tripId") tripId: string,
+                           @Arg("location", () => Point) location: Point,
+                           @PubSub() pubSub: PubSubEngine,
+  ): Promise<Boolean> {
+    const payload: LocationPayload = { id: ++this.autoIncrement, location };
+    await pubSub.publish(tripId, payload);
+    return true;
   }
 }

@@ -1,4 +1,4 @@
-import { Field, Float, InputType, ObjectType } from "type-graphql";
+import { Field, Float, ID, InputType, ObjectType } from "type-graphql";
 
 @ObjectType()
 @InputType("LonLat")
@@ -23,5 +23,21 @@ export class Point {
   y: number;
 }
 
+@ObjectType()
+export class TripLocation {
+  @Field(() => ID)
+  id: number;
+
+  @Field(() => Point)
+  location: Point;
+
+  @Field(() => Date)
+  date: Date;
+}
+
+export interface LocationPayload {
+  id: number;
+  location: Point;
+}
 
 export type Lazy<T extends object> = Promise<T> | T;

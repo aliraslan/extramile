@@ -6,14 +6,17 @@ import * as Express from "express";
 import { createConnection } from "typeorm";
 import * as session from "express-session";
 import * as path from "path";
-import { FeedbackResolver } from "./resolvers/FeedbackResolver";
-import { TripResolver } from "./resolvers/TripResolver";
-import { UserResolver } from "./resolvers/UserResolver";
-import { BusResolver } from "./resolvers/BusResolver";
-import { DriverResolver } from "./resolvers/DriverResolver";
-import { ReservationResolver } from "./resolvers/ReservationResolver";
+import {
+  BusResolver,
+  DriverResolver,
+  FeedbackResolver,
+  ReservationResolver,
+  TripResolver,
+  UserResolver
+} from "./resolvers";
 import * as connectRedis from 'connect-redis';
 import { redis } from "./redis";
+import { createServer } from "http";
 
 
 @Resolver()
@@ -87,7 +90,10 @@ const main: any = async () => {
       res.sendFile(path.resolve(__dirname, "public", "index.html"));
     });
 
-    App.listen(process.env.PORT || 4000, () => {
+    const httpServer = createServer(App);
+    apolloServer.installSubscriptionHandlers(httpServer);
+
+    httpServer.listen(process.env.PORT || 4000, () => {
       console.log(
         `Server is running, GraphQL Endpoint available at http://localhost:4000${
           apolloServer.graphqlPath
@@ -95,7 +101,12 @@ const main: any = async () => {
       );
     });
   } else {
-    app.listen(process.env.PORT || 4000, () => {
+    // Had to do this. because we're using apollo-server-express.
+    // https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#
+    const httpServer = createServer(app);
+    apolloServer.installSubscriptionHandlers(httpServer);
+
+    httpServer.listen(process.env.PORT || 4000, () => {
       console.log(
         `Server is running, GraphQL Playground available at http://localhost:4000${
           apolloServer.graphqlPath
