@@ -2,134 +2,123 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
-import { Button, Input, Icon } from "antd";
+import { Form, Button, Input } from "antd";
 import "./styling/Pronto.css";
-import Geosuggest from "react-geosuggest";
-import "./Geosuggest.css";
-
-// // FOR BESHOY
-
+import { Link } from "react-router-dom";
+import { DrawerView } from "./Drawer";
 // // TODO
-// // EDIT this to make it... work.
-// // Depending on what data the Edit Profile backend code takes, uncomment/remove things as needed.
-// // Variables are featured below in the mutation, as well as <Input> tags below in the render for the element.
-// // Variables are also included in export const EditProfile, you'll need the relevant line for any variable you end up using.
-// // Sorry for not doing much today.
-// // once you write the EditProfileMutation below, run yarn start in your terminal and then head to /editprofile to test, it will not work unless you have the mutation below adjusted and fixed.
-
-// const EditProfileMutation = gql`
-//   mutation EditProfileMutation(
-//     $email: String!
-//     $firstName: String!
-//     $lastName: String
-//     $password: String!
-//   ) {
-//     EditProfile(email: $email, password: $password, firstName: $firstName, lastName = $lastName, ) {
-//       id
-//     }
-//   }
-// `;
+// Registering logs you in.
+const EditProfileMutation = gql`
+  mutation EditProfileMutation(
+    $firstName: String!
+    $email: String!
+    $password: String!
+    $lastName: String!
+    $phone: String!
+  ) {
+    EditProfile(
+      firstName: $firstName
+      email: $email
+      password: $password
+      lastName: $lastName
+      phone: $phone
+    ) {
+      id
+    }
+  }
+`;
 
 export const EditProfile = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  let [homeLocation, sethomeLocation] = useState(""); // I will use Geosuggest for this.
-
-  // Suggestion Code
-  const onSuggestSelect = (suggest: any) => {
-    if (suggest) {
-      homeLocation = suggest.label; // Take location as label, you can use geocode by invoking suggest.location or just lat or lng with suggest.location.lat or suggest.location.lng
-    }
-  };
-  // Suggestion code
-
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [firstName, setFirstName] = useState("");
+  let [lastName, setLastName] = useState("");
+  let [phone, setPhone] = useState("");
+  // TODO replace option absolute with flex box
   return (
     <Mutation mutation={EditProfileMutation}>
-      {(editprofile, { data, loading, error }) => {
+      {(editProfile, { data, loading, error }) => {
         if (data) {
-          // you have edited your profile, sending you back to Map View
-          return <Redirect to="/map" />;
+          // you're now registered, log in
+          return <Redirect to="/app" />;
         }
-        if (error) {
-          console.log(error); // DEVELOPMENT ONLY, NOT RELEVANT LATER.
-        }
+
         return (
           <div className="prontoView">
-            <Input
-              placeholder="Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              style={{
-                position: "absolute",
-                top: "40%",
-                left: "15%",
-                width: "70vw"
-              }}
-            />
-            <Input
-              placeholder="Password"
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "15%",
-                width: "70vw"
-              }}
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            <Input
-              placeholder="First Name"
-              value={firstName}
-              onChange={e => setfirstName(e.target.value)}
-              style={{
-                position: "absolute",
-                top: "60%",
-                left: "15%",
-                width: "70vw"
-              }}
-            />
-
-            <Input
-              placeholder="Last Name"
-              value={lastName}
-              onChange={e => setlastName(e.target.value)}
-              style={{
-                position: "absolute",
-                top: "70%",
-                left: "15%",
-                width: "70vw"
-              }}
-            />
+            <div>
+              <DrawerView />
+            </div>
             <div
               style={{
                 position: "absolute",
-                left: "15%",
-                top: "80%",
-                width: "70vw"
+                top: "25%",
+                left: "12.5%",
+                width: "75vw",
+                height: "50vh",
+                bottom: "25%"
               }}
             >
-              <Geosuggest
-                placeholder={"Home Location"}
-                onSuggestSelect={onSuggestSelect}
-              />
+              <Form>
+                <Form.Item>
+                  <Input
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={e => setFirstName(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={e => setLastName(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    placeholder="Phone number"
+                    value={phone}
+                    type="number"
+                    onChange={e => setPhone(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    style={{
+                      width: "75vw"
+                    }}
+                    type="primary"
+                    onClick={() =>
+                      editProfile({
+                        variables: {
+                          email,
+                          password,
+                          firstName,
+                          lastName,
+                          phone
+                        }
+                      })
+                    }
+                  >
+                    <Link to="/app">Save</Link>
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
-            <Button
-              type="primary"
-              onClick={() =>
-                editprofile({ variables: { email, password, firstName } })
-              }
-              style={{
-                position: "absolute",
-                top: "90%",
-                left: "15%",
-                width: "70vw"
-              }}
-            >
-              EditProfile
-            </Button>
           </div>
         );
       }}
