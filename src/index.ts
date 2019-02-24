@@ -8,6 +8,7 @@ import * as session from "express-session";
 // import { redis } from "./redis";
 import { createServer } from "http";
 import { schema } from "./schema";
+import * as cors from "cors";
 
 
 // TODO check if parcel or webpack can bundle the backend into a single file.
@@ -55,6 +56,8 @@ const main: any = async () => {
       }
     })
   );
+
+  app.use(cors());
 
   apolloServer.applyMiddleware({
     app,
