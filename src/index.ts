@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema, Query, Resolver } from "type-graphql";
 import * as Express from "express";
-import { ConnectionOptions, createConnection } from "typeorm";
 import * as session from "express-session";
 import * as path from "path";
 import {
@@ -18,6 +17,7 @@ import {
 // import * as connectRedis from 'connect-redis';
 // import { redis } from "./redis";
 import { createServer } from "http";
+import { dbConnection } from "./dbConnection";
 
 
 @Resolver()
@@ -31,21 +31,9 @@ export class ConnectionResolver {
 // TODO check if parcel or webpack can bundle the backend into a single file.
 
 const main: any = async () => {
-  const db: ConnectionOptions | string = process.env.NODE_ENV == "production" ? {
-      type: "postgres",
-      extra: {
-        ssl: true
-      },
-      url: process.env.DATABASE_URL,
-      synchronize: true,
-      logging: "all",
-      entities: ["build/entity/**/*.js"],
-      migrations: ["build/migration/**/*.js"]
-    }
-    : "default";
-  await createConnection(db as any);
-  // TODO move to redis for subscriptions instead of the default option.
 
+  // TODO move to redis for subscriptions instead of the default option.
+  await dbConnection();
   const schema = await buildSchema({
     resolvers: [
       TripStopResolver,
