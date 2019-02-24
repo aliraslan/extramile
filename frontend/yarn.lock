@@ -927,6 +927,11 @@
   dependencies:
     "@types/google-maps" "*"
 
+"@types/navigator-permissions@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/navigator-permissions/-/navigator-permissions-0.1.2.tgz#11bcb88b2572335e79f5bc06af08972f26536a7e"
+  integrity sha512-8W+UYJPF7cIJESlL/Z6B282dj2EMizp7G6imbK9yKb4k9ePCNuNv7yri8mCJhcjHPJStpAIn8ovL+CY+tKh5sg==
+
 "@types/node@*":
   version "10.12.24"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.24.tgz#b13564af612a22a20b5d95ca40f1bffb3af315cf"

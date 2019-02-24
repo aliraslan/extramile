@@ -36,7 +36,7 @@ export const Register = () => {
   const [phone, setPhone] = useState("");
   // TODO replace option absolute with flex box
   return (
-    <AuthorizedRoute to="/map">
+    <AuthorizedRoute to="/app">
       <Mutation mutation={RegisterMutation}>
         {(register, { data, loading, error }) => {
           if (data) {
@@ -123,7 +123,7 @@ export const Register = () => {
                         width: "75vw"
                       }}
                     >
-                      <Link to="/app">Have an account? Log in!</Link>
+                      <Link to="/">Have an account? Log in!</Link>
                     </Button>
                   </Form.Item>
                 </Form>

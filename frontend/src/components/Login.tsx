@@ -29,70 +29,65 @@ export const Login = () => {
         {(login, { data, loading, error }) => {
           if (data) {
             // you're now logged in!
+            return <Redirect to="/map" />; // Pending change
+          } else
             return (
-              <div>
-                <MapView />
+              <div className="prontoView">
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  placeholder="Username"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  style={{
+                    position: "absolute",
+                    top: "40%",
+                    left: "15%",
+                    width: "70vw"
+                  }}
+                />
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  placeholder="Password"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "15%",
+                    width: "70vw"
+                  }}
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => login({ variables: { email, password } })}
+                  style={{
+                    position: "absolute",
+                    top: "60%",
+                    left: "15%",
+                    width: "70vw"
+                  }}
+                >
+                  Login
+                </Button>
+                <Button
+                  type="ghost"
+                  style={{
+                    position: "absolute",
+                    top: "70%",
+                    left: "15%",
+                    color: "white",
+                    width: "70vw"
+                  }}
+                >
+                  <Link to="/register">New here? Register!</Link>
+                </Button>
               </div>
-            ); // Pending change
-          }
-
-          return (
-            <div className="prontoView">
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                placeholder="Username"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                style={{
-                  position: "absolute",
-                  top: "40%",
-                  left: "15%",
-                  width: "70vw"
-                }}
-              />
-              <Input
-                prefix={
-                  <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                placeholder="Password"
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "15%",
-                  width: "70vw"
-                }}
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-              <Button
-                type="primary"
-                onClick={() => login({ variables: { email, password } })}
-                style={{
-                  position: "absolute",
-                  top: "60%",
-                  left: "15%",
-                  width: "70vw"
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                type="ghost"
-                style={{
-                  position: "absolute",
-                  top: "70%",
-                  left: "15%",
-                  color: "white",
-                  width: "70vw"
-                }}
-              >
-                <Link to="/register">New here? Register!</Link>
-              </Button>
-            </div>
-          );
+            );
         }}
       </Mutation>
     </AuthorizedRoute>
