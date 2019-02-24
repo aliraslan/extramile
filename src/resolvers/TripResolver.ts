@@ -1,4 +1,14 @@
-import { Arg, ID, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
+import {
+  Arg,
+  ID,
+  Mutation,
+  PubSub,
+  PubSubEngine,
+  Query,
+  Resolver,
+  Root,
+  Subscription
+} from "type-graphql";
 import { ApolloError, UserInputError } from "apollo-server-express";
 import { Trip } from "../entity/Trip";
 import { Driver } from "../entity/Driver";
@@ -18,7 +28,7 @@ export class TripResolver {
   async trips(
     @Arg("take", { defaultValue: 100 }) take: number,
     @Arg("skip", { defaultValue: 0 }) skip: number,
-    @Arg("status", () => TripStatus, { nullable: true }) status?: TripStatus,
+    @Arg("status", () => TripStatus, { nullable: true }) status?: TripStatus
   ): Promise<Trip[]> {
     // check if status is defined and if so return the first `take` trips starting from `skip`
     // with that status
@@ -27,32 +37,48 @@ export class TripResolver {
       return await Trip.find({
         take,
         skip,
-        where: { status },
+        where: { status }
       });
     return await Trip.find({
       take,
-      skip,
+      skip
     });
   }
 
-  @Mutation(() => Trip, { nullable: true, description: "creates a trip without the stops." })
+  @Query(() => Trip, { nullable: true })
+  async tripById(@Arg("tripId") id: string): Promise<Trip | undefined> {
+    return await Trip.findOne(id, { relations: ["stops"] });
+  }
+
+  @Query(() => [Trip], { nullable: true })
+  async tripsByIds(
+    @Arg("tripIds", () => [String]) ids: string[]
+  ): Promise<Trip[]> {
+    return await Trip.findByIds(ids, { relations: ["stops"] });
+  }
+
+  @Mutation(() => Trip, {
+    nullable: true,
+    description: "creates a trip without the stops."
+  })
   async createTrip(
     @Arg("busId", () => ID) busId: number,
     @Arg("driverId", () => ID) driverId: string,
     @Arg("startsAt", { description: "The time the trip starts at" })
-      startsAt: string
+    startsAt: string
   ): Promise<Trip | null> {
     // the reason we're creating a trip without stops is that it's impossible to create both the stops and trips at the same time. as they both depend on each other.
     return await Trip.create({
       startedAt: startsAt,
       busId,
-      driverId,
+      driverId
     }).save();
   }
 
   @Mutation(() => Boolean)
   async setStops(
-    @Arg("stops", () => [String], { description: "array of TripStop ids" }) ids: string[],
+    @Arg("stops", () => [String], { description: "array of TripStop ids" })
+    ids: string[],
     @Arg("tripId") tripId: string
   ): Promise<Boolean> {
     // get trip and stops
@@ -60,8 +86,7 @@ export class TripResolver {
     const trip = await Trip.findOne(tripId);
 
     // check if trip exists
-    if (!trip)
-      throw new UserInputError("Invalid Trip ID");
+    if (!trip) throw new UserInputError("Invalid Trip ID");
 
     for (let stop of stops) {
       // manually set the stop.stopId for each stop
@@ -71,7 +96,6 @@ export class TripResolver {
     getRepository(TripStop).save(stops);
     return true;
   }
-
 
   @Mutation(() => Trip)
   async StartTrip(
@@ -96,7 +120,9 @@ export class TripResolver {
     }
 
     if (trip.status != TripStatus.Planned) {
-      throw new ApolloError(`The trip couldn't be started because it was ${trip.status}`);
+      throw new ApolloError(
+        `The trip couldn't be started because it was ${trip.status}`
+      );
     }
 
     const startsAt = moment(trip.startedAt);
@@ -128,16 +154,19 @@ export class TripResolver {
     @Arg("tripId") tripId: string,
     // extracts the id and location of the locationPayload
     // that was sent as a result of calling UpdateTripLocation (function below)
-    @Root() { id, location }: LocationPayload,
+    @Root() { id, location }: LocationPayload
   ): TripLocation {
     // this gets called each time there
     return { id, location, date: new Date() };
   }
 
-  @Mutation(() => Boolean, { description: "returns true if location was received by the server" })
-  async UpdateTripLocation(@Arg("tripId") tripId: string,
-                           @Arg("location", () => Point) location: Point,
-                           @PubSub() pubSub: PubSubEngine, // used to publish for subscriptions
+  @Mutation(() => Boolean, {
+    description: "returns true if location was received by the server"
+  })
+  async UpdateTripLocation(
+    @Arg("tripId") tripId: string,
+    @Arg("location", () => Point) location: Point,
+    @PubSub() pubSub: PubSubEngine // used to publish for subscriptions
   ): Promise<Boolean> {
     // when this function gets called it creates a new payload and publishes it so
     // that all the people that subscribed would be notified.
