@@ -36,6 +36,9 @@ const main: any = async () => {
       type: "postgres",
       host: "localhost",
       port: 5432,
+      extra: {
+        ssl: true
+      },
       url: process.env.DATABASE_URL,
       "synchronize": true,
       logging: "all",
@@ -101,9 +104,9 @@ const main: any = async () => {
     // let "child" app handle graphql
     App.post("/graphql", app);
 
-    App.use(Express.static(path.resolve(__dirname, "public")));
+    App.use(Express.static(path.resolve(__dirname, "..", "public")));
     App.get("*", (_, res) => {
-      res.sendFile(path.resolve(__dirname, "public", "index.html"));
+      res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
     });
 
     // Handles the subscriptions
