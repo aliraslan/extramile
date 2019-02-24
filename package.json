@@ -37,11 +37,13 @@
     "typescript": "^3.3.3333"
   },
   "scripts": {
+    "install:frontend": "yarn --cwd frontend install",
     "clean": "rimraf build node_modules frontend/build frontend/node_modules",
     "dev": "concurrently \"yarn start:server\" \"yarn start:frontend\" ",
     "start": "yarn start:server",
     "start:server": "ts-node-dev --respawn src/index.ts",
     "start:frontend": "yarn --cwd frontend run start",
-    "build:frontend": "yarn --cwd frontend run build --production"
+    "build:frontend": "yarn --cwd frontend run build --production",
+    "deploy:frontend": "yarn install:frontend && yarn build:frontend"
   }
 }
