@@ -17,7 +17,6 @@ export class TripStopResolver {
     @Arg("location", () => Point) location: Point,
     @Arg("address") address: string
   ): Promise<TripStop> {
-    console.log(location);
     return await TripStop.create({ location, address }).save()
   }
 

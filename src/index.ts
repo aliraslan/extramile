@@ -1,58 +1,29 @@
 import "reflect-metadata";
 
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema, Query, Resolver } from "type-graphql";
 import * as Express from "express";
 import * as session from "express-session";
 import * as path from "path";
-import {
-  BusResolver,
-  DriverResolver,
-  FeedbackResolver,
-  ReservationResolver,
-  TripResolver,
-  TripStopResolver,
-  UserResolver
-} from "./resolvers";
 // import * as connectRedis from 'connect-redis';
 // import { redis } from "./redis";
 import { createServer } from "http";
 import { dbConnection } from "./dbConnection";
+import { schema } from "./schema";
 
-
-@Resolver()
-export class ConnectionResolver {
-  @Query(() => String)
-  async Connection() {
-    return "Connected!";
-  }
-}
 
 // TODO check if parcel or webpack can bundle the backend into a single file.
 
 const main: any = async () => {
-
-  // TODO move to redis for subscriptions instead of the default option.
   await dbConnection();
-  const schema = await buildSchema({
-    resolvers: [
-      TripStopResolver,
-      ConnectionResolver,
-      UserResolver,
-      TripResolver,
-      FeedbackResolver,
-      BusResolver,
-      DriverResolver,
-      ReservationResolver
-    ]
-  });
+  // get node environment
+  const environment = process.env.NODE_ENV;
 
   const apolloServer = new ApolloServer({
-    schema,
-    playground: true, //process.env.NODE_ENV != 'production',
-    context: ({ req }: any) => ({ req }),
-    introspection: true,
-    tracing: true
+    schema: await schema,
+    playground: environment != 'production', // disable if in production
+    context: ({ req }: any) => ({ req }), // allows us to access the context (and cookies) in resolvers
+    introspection: environment != 'production', // disable if in production
+    tracing: environment != 'production' // disable if in production
   });
 
   const app = Express();
@@ -76,7 +47,6 @@ const main: any = async () => {
   apolloServer.applyMiddleware({
     app,
     cors: { credentials: true },
-    path: process.env.NODE_ENV == "production" ? "/" : ""
   });
 
   // i genuinely hate myself for writing this piece of shit but it works
@@ -87,13 +57,16 @@ const main: any = async () => {
     // let "child" app handle graphql
     App.post("/graphql", app);
 
+    // let express handle the serving of the static files in the public dir
     App.use(Express.static(path.resolve(__dirname, "..", "public")));
+    // redirect all routes to index.html because we're doing client side routing
     App.get("*", (_, res) => {
       res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
     });
 
-    // Handles the subscriptions
+    // create a server to handle the subscriptions as per the documentation
     const httpServer = createServer(App);
+    // descriptive
     apolloServer.installSubscriptionHandlers(httpServer);
 
     httpServer.listen(process.env.PORT || 4000, () => {

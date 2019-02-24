@@ -30,7 +30,7 @@ const environments: { [key: string]: ConnectionOptions } = {
 };
 
 
-const db: ConnectionOptions = process.env.NODE_ENV ? environments["production"] : environments["default"];
+const db: ConnectionOptions = process.env.NODE_ENV == "production" ? environments["production"] : environments["default"];
 
 export const dbConnection = async () => await createConnection(db);
 
