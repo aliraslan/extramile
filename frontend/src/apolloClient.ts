@@ -5,14 +5,16 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 
+const isLocalHost = location.hostname === "localhost";
 
 const httpLink = new HttpLink({
-  uri: "/graphql"
+  uri: isLocalHost ? "http://localhost:4000/graphql" : "/graphql"
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: `${location.origin.replace(/^http/, 'ws')}/graphql`,
+  uri: isLocalHost ? "ws://localhost:4000/graphql" :
+    `${location.origin.replace(/^http/, 'ws')}/graphql`,
   options: {
     reconnect: true
   }
