@@ -47,6 +47,6 @@
     "build:server": "",
     "build:frontend": "yarn --cwd frontend run build --production",
     "build": "concurrently \"yarn build:server\" \"yarn build:frontend\" ",
-    "postbuild": "mv frontend/build public"
+    "postbuild:frontend": "mv frontend/build public"
   }
 }
