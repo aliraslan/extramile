@@ -1,7 +1,8 @@
 // USE only as a reference and replace with an actual component
 import { Subscription } from "react-apollo";
-import React from "react";
+import React, { useState } from "react";
 import { gql } from "apollo-boost";
+import { Input } from "antd";
 
 const TRACK_TRIP_SUBSCRIPTION = gql`
 subscription TripLocationSubscription($tripId: String!) {
@@ -15,20 +16,24 @@ subscription TripLocationSubscription($tripId: String!) {
   }
 }`;
 
-// hard coded tripId             v----------------  defining prop type for better auto completion
-export const TrackTrip: React.FC<{ tripId: string }> = ({ tripId = "de54b6c3-c3de-40bc-83bc-a95f462f6614" }) => (
-  <Subscription
-    subscription={TRACK_TRIP_SUBSCRIPTION}
-    variables={{ tripId }}
-  >
-    {({ data, loading }) => {
-      if (data) {
+export const TrackTrip = () => {
+  const [tripId, setTripId] = useState("");
+  return (
+    <>
+      <Input onChange={e => setTripId(e.target.value)} value={tripId}/>
+      <Subscription subscription={TRACK_TRIP_SUBSCRIPTION}
+                    variables={{ tripId }}
+      >
+        {({ data, loading }) => {
+          if (data) {
 
-        const { x, y } = data.TripLocation.location;
-        return <div> current location: LON: {x}, LAT: {y} </div>
-      }
-      // waiting for next publish notification
-      return <div>Connecting..</div>
-    }}
-  </Subscription>
-);
+            const { x, y } = data.TripLocation.location;
+            return <div> current location: LON: {x}, LAT: {y} </div>
+          }
+          // waiting for next publish notification
+          return <div>Connecting..</div>
+        }}
+      </Subscription>
+    </>
+  )
+};

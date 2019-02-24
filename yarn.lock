@@ -156,7 +156,14 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/graphql@^14.0.2", "@types/graphql@^14.0.7":
+"@types/graphql-query-complexity@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/graphql-query-complexity/-/graphql-query-complexity-0.1.2.tgz#e13df7a3ea02651e23265ef0a75848a6f47dc20c"
+  integrity sha512-/Bw1IzDqAViNLb2lovZNLqqJo99ARnQWhS/v0pP7mNruzSLPEam25acP+gyRFEHzVkrpQfNBcK+yEoz70jS64A==
+  dependencies:
+    "@types/graphql" "*"
+
+"@types/graphql@*", "@types/graphql@^14.0.2", "@types/graphql@^14.0.7":
   version "14.0.7"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.7.tgz#daa09397220a68ce1cbb3f76a315ff3cd92312f6"
   integrity sha512-BoLDjdvLQsXPZLJux3lEZANwGr3Xag56Ngy0U3y8uoRSDdeLcn43H3oBcgZlnd++iOQElBpaRVDHPzEDekyvXQ==
@@ -1137,7 +1144,7 @@ graphql-extensions@0.5.2:
   dependencies:
     "@apollographql/apollo-tools" "^0.3.3"
 
-graphql-query-complexity@^0.2.2:
+graphql-query-complexity@^0.2.2, graphql-query-complexity@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.2.3.tgz#ca26790fd5d22cb3d4ca8f43d19605929d8cf27f"
   integrity sha512-XLvEsqGTJmJmgof8u5NjIkBHL75b4Inw1F8JQ3jGRBhr3hVFx6aWOTL7C2aknp1uIh8dRmqwzrb9gas2NLHnfA==
@@ -2645,10 +2652,10 @@ typeorm@0.2.13:
     yargonaut "^1.1.2"
     yargs "^12.0.5"
 
-typescript@3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
-  integrity sha512-Y21Xqe54TBVp+VDSNbuDYdGw0BpoR/Q6wo/+35M8PAU0vipahnyduJWirxxdxjsAkS7hue53x2zp8gz7F05u0A==
+typescript@^3.3.3333:
+  version "3.3.3333"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3333.tgz#171b2c5af66c59e9431199117a3bcadc66fdcfd6"
+  integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
 
 uid-safe@~2.1.5:
   version "2.1.5"

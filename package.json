@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/connect-redis": "^0.0.8",
     "@types/cors": "^2.8.4",
@@ -11,42 +12,43 @@
     "@types/express-session": "^1.15.12",
     "@types/geokdbush": "^1.1.1",
     "@types/graphql": "^14.0.7",
+    "@types/graphql-query-complexity": "^0.1.2",
     "@types/ioredis": "^4.0.8",
     "@types/kdbush": "^1.0.2",
     "@types/node": "^11.9.4",
-    "concurrently": "^4.1.0",
-    "rimraf": "^2.6.3",
-    "ts-node-dev": "^1.0.0-pre.32",
-    "typescript": "3.3.3"
-  },
-  "dependencies": {
     "apollo-server-express": "^2.4.2",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.9.1",
+    "concurrently": "^4.1.0",
     "connect-redis": "^3.4.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "geokdbush": "^1.1.0",
     "graphql": "^14.1.1",
+    "graphql-query-complexity": "^0.2.3",
     "graphql-subscriptions": "^1.0.0",
     "ioredis": "^4.6.2",
     "kdbush": "^3.0.0",
     "moment": "^2.24.0",
     "pg": "^7.8.0",
     "reflect-metadata": "^0.1.10",
+    "rimraf": "^2.6.3",
+    "ts-node-dev": "^1.0.0-pre.32",
     "type-graphql": "^0.16.0",
-    "typeorm": "0.2.13"
+    "typeorm": "0.2.13",
+    "typescript": "^3.3.3333"
   },
   "scripts": {
+    "install:frontend": "yarn --cwd frontend install",
     "clean": "rimraf build node_modules frontend/build frontend/node_modules",
     "dev": "concurrently \"yarn start:server\" \"yarn start:frontend\" ",
+    "start": "yarn start:server",
     "start:server": "ts-node-dev --respawn src/index.ts",
     "start:frontend": "yarn --cwd frontend run start",
-    "build:server": "tsc",
+    "build:server": "",
     "build:frontend": "yarn --cwd frontend run build --production",
-    "prebuild": "rimraf build frontend/build",
     "build": "concurrently \"yarn build:server\" \"yarn build:frontend\" ",
-    "postbuild": "mv frontend/build build/public"
+    "postbuild:frontend": "mv frontend/build public"
   }
 }

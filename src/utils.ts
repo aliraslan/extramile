@@ -6,9 +6,8 @@ export class Point {
   // DONT CHANGE THIS.
   // as the typeorm point expects fields of name x and y. DONT CHANGE THE NAMES
   // and DONT ADD the name property in the field for both x and y as
-  // any change would either result in a lot of transformation before either inserting
-  // into the Database or parsing the result form the database or in each resolver
-  // that expects an argument of time Point/LonLat or all of the above
+  // any change would either result in having to change the transformer field in
+  // in every model where the Point type is used.
 
   /** @name x
    *  @description longitude
@@ -23,6 +22,7 @@ export class Point {
   y: number;
 }
 
+// Input type used to let graphql know that we want to use it as an argument in our queries and mutations
 @InputType("TripStopInput")
 export class TripStopInput {
   @Field(() => Point)
@@ -32,6 +32,7 @@ export class TripStopInput {
   address: number;
 }
 
+// ObjectType tells graphql that we want to return this object as Field in our queries
 @ObjectType()
 export class TripLocation {
   @Field(() => ID)

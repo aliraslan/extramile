@@ -5,9 +5,19 @@ import { TripResolver } from "./TripResolver";
 import { FeedbackResolver } from "./FeedbackResolver";
 import { ReservationResolver } from "./ReservationResolver";
 import { TripStopResolver } from "./TripStopResolver";
+import { Query, Resolver } from "type-graphql";
 
+
+@Resolver()
+class ConnectionResolver {
+  @Query(() => String)
+  async Connection() {
+    return "Connected!";
+  }
+}
 
 export {
+  ConnectionResolver,
   UserResolver,
   TripResolver,
   FeedbackResolver,
