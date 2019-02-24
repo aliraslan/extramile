@@ -2,6 +2,8 @@ import React from "react";
 import Geosuggest from "react-geosuggest";
 import { Input, Button } from "antd";
 import "./Geosuggest.css";
+import { gql } from "apollo-boost";
+
 import {
   withScriptjs,
   withGoogleMap,
@@ -11,7 +13,7 @@ import {
 import { DrawerView } from "./Drawer";
 const onSuggestSelect = (suggest: any) => {
   if (suggest) {
-    console.log(
+    alert(
       "You are going to " +
         suggest.label +
         " \nThe coordinates are: " +
@@ -21,7 +23,27 @@ const onSuggestSelect = (suggest: any) => {
     );
   }
 };
-
+const tripsQuery = gql`
+  {
+    trips {
+      id
+      startedAt
+      status
+      stops {
+        address
+      }
+      bus {
+        make
+        model
+        licensePlate
+      }
+      driver {
+        firstName
+        lastName
+      }
+    }
+  }
+`;
 export function MapView() {
   const MyMap = withScriptjs(
     withGoogleMap(
@@ -39,10 +61,9 @@ export function MapView() {
           <div
             style={{
               position: "absolute",
-              left: "15%",
-              top: "10%",
-              width: "60vw",
-              height: "25",
+              left: "5%",
+              bottom: "10%",
+              width: "90vw",
               textAlign: "center"
             }}
           >

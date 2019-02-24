@@ -2,45 +2,33 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
-import { Form, Button, Input } from "antd";
+import { Form, Button, Input, Upload, message } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
 import { DrawerView } from "./Drawer";
-// // TODO
-// Registering logs you in.
-const EditProfileMutation = gql`
-  mutation EditProfileMutation(
-    $firstName: String!
-    $email: String!
-    $password: String!
-    $lastName: String!
-    $phone: String!
-  ) {
-    EditProfile(
-      firstName: $firstName
-      email: $email
-      password: $password
-      lastName: $lastName
-      phone: $phone
-    ) {
+import Geosuggest from "react-geosuggest";
+import "./Geosuggest.css";
+const EditUserMutation = gql`
+  mutation EditUserMutation($options: EditUserOptions!) {
+    EditUser(EditUserOptions: $options) {
       id
     }
   }
 `;
-
 export const EditProfile = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [firstName, setFirstName] = useState("");
   let [lastName, setLastName] = useState("");
   let [phone, setPhone] = useState("");
+
   // TODO replace option absolute with flex box
   return (
-    <Mutation mutation={EditProfileMutation}>
-      {(editProfile, { data, loading, error }) => {
+    <Mutation mutation={EditUserMutation}>
+      {(editUser, { data, loading, error }) => {
         if (data) {
-          // you're now registered, log in
-          return <Redirect to="/app" />;
+          // Profile editing complete, return to map
+          return <Redirect to="/map" />;
         }
 
         return (
@@ -51,14 +39,17 @@ export const EditProfile = () => {
             <div
               style={{
                 position: "absolute",
-                top: "25%",
+                top: "10%",
                 left: "12.5%",
                 width: "75vw",
-                height: "50vh",
+                height: "85vh",
                 bottom: "25%"
               }}
             >
               <Form>
+                <Form.Item>
+                  <h2 className="HeaderText">Edit Profile</h2>
+                </Form.Item>
                 <Form.Item>
                   <Input
                     placeholder="First Name"
@@ -99,22 +90,25 @@ export const EditProfile = () => {
                 <Form.Item>
                   <Button
                     style={{
+                      marginTop: "3em",
                       width: "75vw"
                     }}
                     type="primary"
                     onClick={() =>
-                      editProfile({
+                      editUser({
                         variables: {
-                          email,
-                          password,
-                          firstName,
-                          lastName,
-                          phone
+                          options: {
+                            email,
+                            password,
+                            firstName,
+                            lastName,
+                            phone
+                          }
                         }
                       })
                     }
                   >
-                    <Link to="/app">Save</Link>
+                    <Link to="/map">Save</Link>
                   </Button>
                 </Form.Item>
               </Form>
