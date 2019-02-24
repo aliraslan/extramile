@@ -8,7 +8,6 @@ import * as session from "express-session";
 // import { redis } from "./redis";
 import { createServer } from "http";
 import { schema } from "./schema";
-import { SubscriptionServer } from "subscriptions-transport-ws";
 
 
 // TODO check if parcel or webpack can bundle the backend into a single file.
@@ -77,7 +76,7 @@ const main: any = async () => {
         apolloServer.graphqlPath
         }`
     );
-    new SubscriptionServer({ schema: await schema }, httpServer as any);
+
   });
 
 };
