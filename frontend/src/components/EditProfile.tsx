@@ -5,17 +5,18 @@ import { Redirect } from "react-router";
 import { Form, Button, Input } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
+import { DrawerView } from "./Drawer";
 // // TODO
 // Registering logs you in.
-const RegisterMutation = gql`
-  mutation RegisterMutation(
+const EditProfileMutation = gql`
+  mutation EditProfileMutation(
     $firstName: String!
     $email: String!
     $password: String!
     $lastName: String!
     $phone: String!
   ) {
-    Register(
+    EditProfile(
       firstName: $firstName
       email: $email
       password: $password
@@ -27,16 +28,16 @@ const RegisterMutation = gql`
   }
 `;
 
-export const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
+export const EditProfile = () => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [firstName, setFirstName] = useState("");
+  let [lastName, setLastName] = useState("");
+  let [phone, setPhone] = useState("");
   // TODO replace option absolute with flex box
   return (
-    <Mutation mutation={RegisterMutation}>
-      {(register, { data, loading, error }) => {
+    <Mutation mutation={EditProfileMutation}>
+      {(editProfile, { data, loading, error }) => {
         if (data) {
           // you're now registered, log in
           return <Redirect to="/app" />;
@@ -44,6 +45,9 @@ export const Register = () => {
 
         return (
           <div className="prontoView">
+            <div>
+              <DrawerView />
+            </div>
             <div
               style={{
                 position: "absolute",
@@ -99,7 +103,7 @@ export const Register = () => {
                     }}
                     type="primary"
                     onClick={() =>
-                      register({
+                      editProfile({
                         variables: {
                           email,
                           password,
@@ -110,18 +114,7 @@ export const Register = () => {
                       })
                     }
                   >
-                    Register
-                  </Button>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    type="ghost"
-                    style={{
-                      color: "white",
-                      width: "75vw"
-                    }}
-                  >
-                    <Link to="/app">Have an account? Log in!</Link>
+                    <Link to="/app">Save</Link>
                   </Button>
                 </Form.Item>
               </Form>

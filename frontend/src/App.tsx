@@ -12,19 +12,20 @@ import { TrackTrip } from "./components/TrackTrip";
 import { client } from "./apolloClient";
 
 import "./App.css";
-
+import { EditProfile } from "./components/EditProfile";
 
 const App = () => (
   <ApolloProvider client={client}>
     <Router>
       <Switch>
-        <Route exact path="/" component={LandingView}/>
-        <Route path="/driver" component={DriverView}/>
-        <Route path="/app" component={Login}/>
-        <Route path="/register" component={Register}/>
-        <Route path="/map" component={MapView}/>
-        <Route path="/track" component={TrackTrip}/>
-        <Route component={NotFound}/>
+        <Route exact path="/" component={LandingView} />
+        <Route path="/driver" component={DriverView} />
+        <Route path="/app" component={Login} />
+        <Route path="/register" component={Register} />
+        <Route path="/map" component={MapView} />
+        <Route path="/track" component={TrackTrip} />
+        <Route path="/editprofile" component={EditProfile} />
+        <Route component={NotFound} />
       </Switch>
     </Router>
   </ApolloProvider>

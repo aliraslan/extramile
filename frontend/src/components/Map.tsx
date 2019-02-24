@@ -8,6 +8,7 @@ import {
   GoogleMap,
   Marker
 } from "react-google-maps";
+import { DrawerView } from "./Drawer";
 const onSuggestSelect = (suggest: any) => {
   if (suggest) {
     console.log(
@@ -32,6 +33,9 @@ export function MapView() {
             disableDefaultUI: true
           }}
         >
+          <div>
+            <DrawerView />
+          </div>
           <div
             style={{
               position: "absolute",
