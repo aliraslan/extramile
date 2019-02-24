@@ -8,12 +8,14 @@ import * as session from "express-session";
 // import { redis } from "./redis";
 import { createServer } from "http";
 import { schema } from "./schema";
+import { SubscriptionServer } from "subscriptions-transport-ws";
 
 
 // TODO check if parcel or webpack can bundle the backend into a single file.
 
 const main: any = async () => {
-  const db: ConnectionOptions | string = process.env.NODE_ENV == "production" ? {
+  const enivroment = process.env.NODE_ENV;
+  const db: ConnectionOptions | string = enivroment == "production" ? {
       type: "postgres",
       host: "localhost",
       port: 5432,
@@ -69,12 +71,13 @@ const main: any = async () => {
   const httpServer = createServer(app);
   apolloServer.installSubscriptionHandlers(httpServer);
 
-  httpServer.listen(process.env.PORT || 4000, () => {
+  httpServer.listen(process.env.PORT || 4000, async () => {
     console.log(
       `Server is running, GraphQL Endpoint available at http://localhost:4000${
         apolloServer.graphqlPath
         }`
     );
+    new SubscriptionServer({ schema: await schema }, httpServer as any);
   });
 
 };

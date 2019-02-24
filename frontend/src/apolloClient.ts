@@ -15,7 +15,11 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: process.env.REACT_APP_SERVER_URL_WS!,
   options: {
-    reconnect: true
+    reconnect: true,
+    reconnectionAttempts: 20,
+    connectionCallback: ((error, result) => {
+      console.log(`ERROR ${JSON.stringify(error)}`)
+    })
   }
 });
 
