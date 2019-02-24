@@ -23,10 +23,11 @@ export class TripStop extends BaseEntity {
   @Field(() => Point)
   location: Point;
 
-  @ManyToOne(() => Trip, (trip: Trip) => trip.stops, { lazy: true, nullable: true })
-  @Field(() => Trip, { nullable: true })
+  @ManyToOne(() => Trip, (trip: Trip) => trip.stops, { nullable: true, lazy: true })
+  @Field(() => Trip, { nullable: true, complexity: 1 })
   trip: Lazy<Trip>;
 
   @Column({ nullable: true })
+  @Field({ nullable: true })
   tripId?: string;
 }

@@ -1,6 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { User } from "../entity/User";
 import * as bcrypt from "bcryptjs";
+import { UserInputError } from "apollo-server-express";
 
 @Resolver()
 export class UserResolver {
@@ -36,10 +37,17 @@ export class UserResolver {
                  @Arg("lastName") lastName: string,
                  @Arg("phone") phone: string,
                  @Arg("password") password: string,
+                 @Ctx() context: any
   ): Promise<User> {
     const hash = await bcrypt.hash(password, 2);
-    return await User.create({
+    const user = await User.create({
       email, firstName, password: hash, lastName, phone
-    }).save()
+    }).save();
+
+    if (!user)
+      throw new UserInputError("Bad input", user);
+
+    context.req.session.userId = user.id;
+    return user;
   }
 }

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
-  "devDependencies": {
+  "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/connect-redis": "^0.0.8",
     "@types/cors": "^2.8.4",
@@ -13,9 +13,7 @@
     "@types/graphql": "^14.0.7",
     "@types/ioredis": "^4.0.8",
     "@types/kdbush": "^1.0.2",
-    "@types/node": "^11.9.4"
-  },
-  "dependencies": {
+    "@types/node": "^11.9.4",
     "apollo-server-express": "^2.4.2",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.9.1",
@@ -39,16 +37,11 @@
     "typescript": "^3.3.3333"
   },
   "scripts": {
-    "install": "yarn --cwd frontend install",
     "clean": "rimraf build node_modules frontend/build frontend/node_modules",
     "dev": "concurrently \"yarn start:server\" \"yarn start:frontend\" ",
-    "start": "node build/index.js",
+    "start": "yarn start:server",
     "start:server": "ts-node-dev --respawn src/index.ts",
     "start:frontend": "yarn --cwd frontend run start",
-    "build:server": "tsc",
-    "build:frontend": "yarn --cwd frontend run build --production",
-    "prebuild": "rimraf build frontend/build",
-    "build": "concurrently \"yarn build:server\" \"yarn build:frontend\" ",
-    "postbuild": "mv frontend/build build/public"
+    "build:frontend": "yarn --cwd frontend run build --production"
   }
 }

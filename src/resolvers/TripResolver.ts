@@ -25,10 +25,12 @@ export class TripResolver {
         take,
         skip,
         where: { status },
+        relations: ["stops", "driver", "reservations"]
       });
     return await Trip.find({
       take,
       skip,
+      relations: ["stops", "driver", "reservations"]
     });
   }
 
