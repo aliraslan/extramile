@@ -32,22 +32,15 @@ export class ConnectionResolver {
 
 const main: any = async () => {
   const db: ConnectionOptions | string = process.env.NODE_ENV == "production" ? {
-      name: "production",
       type: "postgres",
-      host: "localhost",
-      port: 5432,
       extra: {
         ssl: true
       },
       url: process.env.DATABASE_URL,
-      "synchronize": true,
+      synchronize: true,
       logging: "all",
-      "entities": [
-        "build/entity/**/*.js"
-      ],
-      migrations: [
-        "build/migration/**/*.js"
-      ]
+      entities: ["build/entity/**/*.js"],
+      migrations: ["build/migration/**/*.js"]
     }
     : "default";
   await createConnection(db as any);
@@ -68,8 +61,10 @@ const main: any = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    playground: process.env.NODE_ENV != 'production',
-    context: ({ req }: any) => ({ req })
+    playground: true, //process.env.NODE_ENV != 'production',
+    context: ({ req }: any) => ({ req }),
+    introspection: true,
+    tracing: true
   });
 
   const app = Express();
