@@ -15,8 +15,7 @@ export const AuthorizedRoute: React.FC<{ to: string }> = ({ to, children }) => (
   >
     {({ data, loading, error }) => {
       if (loading) return <div> loading </div>;
-
-      if (data) return <Redirect to={to} />;
+      if (data.current) return <Redirect to={to} />;
 
       return children;
     }}
