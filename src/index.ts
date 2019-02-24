@@ -57,14 +57,13 @@ const main: any = async () => {
     })
   );
 
-  app.use(cors());
+  app.use(cors({
+    credentials: true,
+    origin: process.env.FRONTEND_HOST!,
+  }));
 
   apolloServer.applyMiddleware({
     app,
-    cors: {
-      credentials: true,
-      origin: process.env.FRONTEND_HOST!
-    },
     // path: process.env.NODE_ENV == "production" ? "/" : ""
   });
 
