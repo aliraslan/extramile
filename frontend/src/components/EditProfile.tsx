@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
-import { Form, Button, Input } from "antd";
+import { Form, Button, Input, Upload, message } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
 import { DrawerView } from "./Drawer";
+import Geosuggest from "react-geosuggest";
+import "./Geosuggest.css";
+import { number } from "prop-types";
 // // TODO
 // Registering logs you in.
 const EditProfileMutation = gql`
@@ -15,6 +18,10 @@ const EditProfileMutation = gql`
     $password: String!
     $lastName: String!
     $phone: String!
+    $homeLocation: Object
+    $homeAddress: String
+    $workLocation: Object
+    $workAddress: String
   ) {
     EditProfile(
       firstName: $firstName
@@ -22,12 +29,41 @@ const EditProfileMutation = gql`
       password: $password
       lastName: $lastName
       phone: $phone
+      homeLocation: $homeLocation
+      workLocation: $workLocation
+      homeAddress: $homeAddress
+      workAddress: $workAddress
     ) {
       id
     }
   }
 `;
+let homeAddress: string = "";
+let workAddress: string = "";
+let homeLocation = {
+  x: number,
+  y: number
+};
+let workLocation = {
+  x: number,
+  y: number
+};
 
+const onSuggestHomeSelect = (suggest: any) => {
+  if (suggest) {
+    homeAddress = suggest.label;
+    homeLocation.x = suggest.location.lng;
+    homeLocation.y = suggest.location.lat;
+  }
+};
+const onSuggestWorkSelect = (suggest: any) => {
+  if (suggest) {
+    workAddress = suggest.label;
+    workLocation.x = suggest.location.lng;
+    workLocation.y = suggest.location.lat;
+    alert(workAddress);
+  }
+};
 export const EditProfile = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -51,14 +87,17 @@ export const EditProfile = () => {
             <div
               style={{
                 position: "absolute",
-                top: "25%",
+                top: "8%",
                 left: "12.5%",
                 width: "75vw",
-                height: "50vh",
+                height: "85vh",
                 bottom: "25%"
               }}
             >
               <Form>
+                <Form.Item>
+                  <h2 className="HeaderText">Edit Profile</h2>
+                </Form.Item>
                 <Form.Item>
                   <Input
                     placeholder="First Name"
@@ -97,8 +136,25 @@ export const EditProfile = () => {
                   />
                 </Form.Item>
                 <Form.Item>
+                  <div className="GeoSuggestField">
+                    <Geosuggest
+                      placeholder={"Home Address"}
+                      onSuggestSelect={onSuggestHomeSelect}
+                    />
+                  </div>
+                </Form.Item>
+                <Form.Item>
+                  <div className="GeoSuggestField">
+                    <Geosuggest
+                      placeholder={"Work Address"}
+                      onSuggestSelect={onSuggestWorkSelect}
+                    />
+                  </div>
+                </Form.Item>
+                <Form.Item>
                   <Button
                     style={{
+                      marginTop: "3em",
                       width: "75vw"
                     }}
                     type="primary"

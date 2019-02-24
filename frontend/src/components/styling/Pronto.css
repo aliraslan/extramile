@@ -1,6 +1,15 @@
+.loginView {
+  background-image: url("https://source.unsplash.com/1920x1920/?blur");
+}
 .prontoView {
-  background-color: #404040;
-  background-image: url("https://source.unsplash.com/720x1280/?egypt");
+  background-color: #7e57c2;
   height: 100vh;
   width: 100vw;
+}
+
+.HeaderText {
+  font-size: 20px;
+  font-style: bold;
+  color: #eee;
+  text-align: center;
 }

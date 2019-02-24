@@ -39,10 +39,9 @@ export function MapView() {
           <div
             style={{
               position: "absolute",
-              left: "15%",
-              top: "10%",
-              width: "60vw",
-              height: "25",
+              left: "5%",
+              bottom: "10%",
+              width: "90vw",
               textAlign: "center"
             }}
           >
