@@ -3,6 +3,7 @@ import { Subscription } from "react-apollo";
 import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { Input } from "antd";
+import { AuthorizedRoute } from "./CheckLoggedIn";
 
 const TRACK_TRIP_SUBSCRIPTION = gql`
 subscription TripLocationSubscription($tripId: String!) {
@@ -19,7 +20,7 @@ subscription TripLocationSubscription($tripId: String!) {
 export const TrackTrip = () => {
   const [tripId, setTripId] = useState("");
   return (
-    <>
+    <AuthorizedRoute to="/login">
       <Input onChange={e => setTripId(e.target.value)} value={tripId}/>
       <Subscription subscription={TRACK_TRIP_SUBSCRIPTION}
                     variables={{ tripId }}
@@ -34,6 +35,6 @@ export const TrackTrip = () => {
           return <div>Connecting..</div>
         }}
       </Subscription>
-    </>
+    </AuthorizedRoute>
   )
 };

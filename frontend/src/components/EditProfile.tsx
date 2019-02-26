@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
+import {AuthorizedRoute} from "./CheckLoggedIn";
 import { Form, Button, Input, Upload, message } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
@@ -24,6 +25,7 @@ export const EditProfile = () => {
 
   // TODO replace option absolute with flex box
   return (
+    <AuthorizedRoute to="/login">
     <Mutation mutation={EditUserMutation}>
       {(editUser, { data, loading, error }) => {
         if (data) {
@@ -117,5 +119,6 @@ export const EditProfile = () => {
         );
       }}
     </Mutation>
+    </AuthorizedRoute>
   );
 };

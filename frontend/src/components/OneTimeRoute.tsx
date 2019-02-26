@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
 
-export const AuthorizedRoute: React.FC<{ to: string }> = ({ to, children }) => (
+export const OneTimeRoute: React.FC<{ to: string }> = ({ to, children }) => (
   <Query
     query={gql`
       {
@@ -15,8 +15,8 @@ export const AuthorizedRoute: React.FC<{ to: string }> = ({ to, children }) => (
   >
     {({ data, loading, error }) => {
       if (loading) return <div> loading </div>;
-      if (data.current === null) return <Redirect to={to} />;
-      else if (data.current) return children;
+      if (data.current) return <Redirect to={to} />;
+      else if (data.current === null) return children;
     }}
   </Query>
 );

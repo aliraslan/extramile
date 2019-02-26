@@ -3,7 +3,7 @@ import Geosuggest from "react-geosuggest";
 import { Input } from "antd";
 import "./Geosuggest.css";
 import { gql } from "apollo-boost";
-
+import {AuthorizedRoute} from "./CheckLoggedIn";
 import {
   withScriptjs,
   withGoogleMap,
@@ -110,6 +110,7 @@ export function MapView() {
   );
   getUserLocation();
   return (
+    <AuthorizedRoute to="/login">
     <MyMap
       isMarkerShown
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbzcvcJ23ACYcwyqLGOS1EI9Jwt1Ev6cM&libraries=geometry,drawing,places"
@@ -117,5 +118,6 @@ export function MapView() {
       containerElement={<div style={{ height: `100vh` }} />}
       mapElement={<div style={{ height: `100%` }} />}
     />
+    </AuthorizedRoute>
   );
 }

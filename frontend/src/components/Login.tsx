@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { DrawerView } from "./Drawer";
 import { MapView } from "./Map";
 import { EditProfile } from "./EditProfile";
-import { AuthorizedRoute } from "./CheckLoggedIn";
+import {OneTimeRoute} from "./OneTimeRoute";
 
 const LoginMutation = gql`
   mutation LoginMutation($email: String!, $password: String!) {
@@ -24,7 +24,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <AuthorizedRoute to="/map">
+    <OneTimeRoute to="/map">
       <Mutation mutation={LoginMutation}>
         {(login, { data, loading, error }) => {
           if (data) {
@@ -90,6 +90,6 @@ export const Login = () => {
             );
         }}
       </Mutation>
-    </AuthorizedRoute>
+    </OneTimeRoute>
   );
 };
