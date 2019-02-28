@@ -13,6 +13,7 @@ export class User extends Account {
   email: string;
 
   @Column()
+  @Field()
   password: string;
 
   @Column({ length: 256, nullable: true })

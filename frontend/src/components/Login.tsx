@@ -18,24 +18,21 @@ const LoginMutation = gql`
     }
   }
 `;
-
+const _confirm = async (data: any) => {};
 export const LoginView = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
-    <OneTimeRoute to="/map">
-      <Mutation mutation={LoginMutation}>
+    <div>
+      <Mutation mutation={LoginMutation} onCompleted={data => _confirm(data)}>
         {(login, { data, loading, error }) => {
           if (data) {
-            // you're now logged in!
-            console.log("LoginOutput");
-            console.log(data);
-            return <Redirect to="/map" />;
-
-            // Pending change
-          } else
-            return (
+            console.log("Successfully logged in.");
+            window.location.reload(); // temporary silly fix
+          }
+          return (
+            <OneTimeRoute>
               <div className="prontoView">
                 <div
                   style={{
@@ -95,9 +92,10 @@ export const LoginView = () => {
                   </Form>
                 </div>
               </div>
-            );
+            </OneTimeRoute>
+          );
         }}
       </Mutation>
-    </OneTimeRoute>
+    </div>
   );
 };

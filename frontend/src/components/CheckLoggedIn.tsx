@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Redirect } from "react-router";
 
-export const AuthorizedRoute: React.FC<{ to: string }> = ({ to, children }) => (
+export const AuthorizedRoute: React.FC = ({ children }) => (
   <Query
     query={gql`
       {
@@ -14,14 +14,12 @@ export const AuthorizedRoute: React.FC<{ to: string }> = ({ to, children }) => (
     `}
   >
     {({ data, loading, error }) => {
-      if (loading) return <div> loading </div>;
+      if (loading) return <div>loading...</div>;
+      if (error) return <div>ERRORLOG</div>;
       if (data.current === null) {
-        console.log("AuthorizedRouteOutput");
-        console.log(data);
-        return <Redirect to={to} />;
+        console.log("Not logged in.");
+        return <Redirect to="/login" />;
       } else {
-        console.log("AuthorizedRouteOutput");
-        console.log(data);
         return children;
       }
     }}

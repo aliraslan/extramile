@@ -110,7 +110,7 @@ export function MapView() {
   );
   getUserLocation();
   return (
-    <AuthorizedRoute to="/login">
+    <AuthorizedRoute>
       <MyMap
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbzcvcJ23ACYcwyqLGOS1EI9Jwt1Ev6cM&libraries=geometry,drawing,places"

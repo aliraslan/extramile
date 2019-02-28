@@ -37,12 +37,12 @@ export const Register = () => {
   const [phone, setPhone] = useState("");
   // TODO replace option absolute with flex box
   return (
-    <OneTimeRoute to="/map">
+    <OneTimeRoute>
       <Mutation mutation={RegisterMutation}>
         {(register, { data, loading, error }) => {
           if (data) {
             // you're now registered, log in
-            return <Redirect to="/map" />;
+            window.location.reload(); // temporary silly fix
           }
 
           return (

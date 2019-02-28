@@ -8,7 +8,7 @@ import { getMainDefinition } from 'apollo-utilities';
 const isLocalHost = location.hostname === "localhost";
 
 const httpLink = new HttpLink({
-  uri: isLocalHost ? "http://localhost:4000/graphql" : "/graphql"
+  uri: "/graphql"
 });
 
 
