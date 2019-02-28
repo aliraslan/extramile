@@ -5,7 +5,8 @@ import { Redirect } from "react-router";
 import { Form, Button, Input } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
-import { AuthorizedRoute } from "./CheckLoggedIn";
+import { OneTimeRoute } from "./OneTimeRoute";
+
 // // TODO
 // Registering logs you in.
 const RegisterMutation = gql`
@@ -36,12 +37,12 @@ export const Register = () => {
   const [phone, setPhone] = useState("");
   // TODO replace option absolute with flex box
   return (
-    <AuthorizedRoute to="/app">
+    <OneTimeRoute>
       <Mutation mutation={RegisterMutation}>
         {(register, { data, loading, error }) => {
           if (data) {
             // you're now registered, log in
-            return <Redirect to="/map" />;
+            window.location.reload(); // temporary silly fix
           }
 
           return (
@@ -123,7 +124,7 @@ export const Register = () => {
                         width: "75vw"
                       }}
                     >
-                      <Link to="/">Have an account? Log in!</Link>
+                      <Link to="/login">Have an account? Log in!</Link>
                     </Button>
                   </Form.Item>
                 </Form>
@@ -132,6 +133,6 @@ export const Register = () => {
           );
         }}
       </Mutation>
-    </AuthorizedRoute>
+    </OneTimeRoute>
   );
 };
