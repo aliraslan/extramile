@@ -27,7 +27,7 @@ export const Login = () => {
     <OneTimeRoute to="/map">
       <Mutation mutation={LoginMutation}>
         {(login, { data, loading, error }) => {
-          if (data) {
+          if (data.Login) {
             // you're now logged in!
             return <Redirect to="/map" />; // Pending change
           } else

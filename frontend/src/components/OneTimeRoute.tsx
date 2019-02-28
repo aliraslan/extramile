@@ -16,7 +16,7 @@ export const OneTimeRoute: React.FC<{ to: string }> = ({ to, children }) => (
     {({ data, loading, error }) => {
       if (loading) return <div> loading </div>;
       if (data.current) return <Redirect to={to} />;
-      else if (data.current === null) return children;
+      else return children;
     }}
   </Query>
 );
