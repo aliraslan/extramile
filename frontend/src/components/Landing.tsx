@@ -1,7 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
-import { Login } from "./Login";
 import { AuthorizedRoute } from "./CheckLoggedIn";
 
 export const LandingView = () => {
@@ -23,10 +22,5 @@ export const LandingView = () => {
         );
       }}
     </Query>
-    // <AuthorizedRoute to="/map">
-    //   <div>
-    //     <Login />
-    //   </div>
-    // </AuthorizedRoute>
   );
 };

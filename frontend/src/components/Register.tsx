@@ -5,7 +5,7 @@ import { Redirect } from "react-router";
 import { Form, Button, Input } from "antd";
 import "./styling/Pronto.css";
 import { Link } from "react-router-dom";
-import {OneTimeRoute} from "./OneTimeRoute";
+import { OneTimeRoute } from "./OneTimeRoute";
 
 // // TODO
 // Registering logs you in.
@@ -124,7 +124,7 @@ export const Register = () => {
                         width: "75vw"
                       }}
                     >
-                      <Link to="/">Have an account? Log in!</Link>
+                      <Link to="/login">Have an account? Log in!</Link>
                     </Button>
                   </Form.Item>
                 </Form>
