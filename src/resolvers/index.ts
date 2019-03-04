@@ -5,8 +5,8 @@ import { TripResolver } from "./TripResolver";
 import { FeedbackResolver } from "./FeedbackResolver";
 import { ReservationResolver } from "./ReservationResolver";
 import { TripStopResolver } from "./TripStopResolver";
+import { LineResolver } from "./LineResolver";
 import { Query, Resolver } from "type-graphql";
-
 
 @Resolver()
 class ConnectionResolver {
@@ -24,5 +24,6 @@ export {
   BusResolver,
   TripStopResolver,
   DriverResolver,
-  ReservationResolver
-}
+  ReservationResolver,
+  LineResolver
+};

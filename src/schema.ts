@@ -7,7 +7,8 @@ import {
   ReservationResolver,
   TripResolver,
   TripStopResolver,
-  UserResolver
+  UserResolver,
+  LineResolver
 } from "./resolvers";
 
 export const schema = buildSchema({
@@ -19,6 +20,7 @@ export const schema = buildSchema({
     FeedbackResolver,
     BusResolver,
     DriverResolver,
-    ReservationResolver
+    ReservationResolver,
+    LineResolver
   ]
 });

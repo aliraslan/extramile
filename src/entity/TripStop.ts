@@ -8,6 +8,7 @@ import {
 import { Field, ID, ObjectType } from "type-graphql";
 import { Lazy, Point } from "../utils";
 import { Trip } from "./Trip";
+import { Line } from "./Line";
 
 @Entity()
 @ObjectType()
@@ -40,4 +41,15 @@ export class TripStop extends BaseEntity {
   @Column({ nullable: true })
   @Field({ nullable: true })
   tripId?: string;
+
+  @ManyToOne(() => Line, (line: Line) => line.stops, {
+    lazy: true,
+    nullable: true
+  })
+  @Field(() => Line, { nullable: true })
+  line: Lazy<Line>;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  lineId?: string;
 }
